@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.widget.Button
 import com.google.firebase.auth.FirebaseAuth
 
-class ListagemActivity : AppCompatActivity() {
+class AppActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_listagem)
@@ -15,7 +15,7 @@ class ListagemActivity : AppCompatActivity() {
 
         button2.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
-            val intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, LoginActivity::class.java)
 
             startActivity(intent)
 

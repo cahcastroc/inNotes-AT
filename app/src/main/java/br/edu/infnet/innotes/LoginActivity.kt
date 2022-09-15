@@ -1,19 +1,16 @@
 package br.edu.infnet.innotes
 
 import android.content.Intent
-import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.InputType
 import android.util.Patterns
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import java.util.*
 
-class MainActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity() {
 
     private lateinit var appAuth: FirebaseAuth
     private var appUser: FirebaseUser? = null
@@ -21,13 +18,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
+        setContentView(R.layout.activity_login)
 
         appAuth = FirebaseAuth.getInstance()
 
         val btLogin = findViewById<Button>(R.id.btLogin)
         val btCadastrar = findViewById<Button>(R.id.btCadastrar)
+        val btFacebook = findViewById<Button>(R.id.btFacebook)
 
         btLogin.setOnClickListener {
             try {
@@ -40,8 +37,7 @@ class MainActivity : AppCompatActivity() {
                         if (it.isSuccessful) {
                             appUser = appAuth.currentUser
 
-                            val emailUsuario = "${appUser!!.email}"
-                            val ultimoLogin = "${Date(appUser!!.metadata!!.lastSignInTimestamp)}"
+
                             intentAppActivity()
 
                         } else {
@@ -97,6 +93,8 @@ class MainActivity : AppCompatActivity() {
             }
 
         }
+
+
     }
 
     override fun onStart() {
@@ -107,9 +105,8 @@ class MainActivity : AppCompatActivity() {
         if (currentUser != null) {
             Toast.makeText(this, "Logado: ${appUser?.email}", Toast.LENGTH_LONG).show()
             intentAppActivity()
-
+            ///--------
         } else {
-
             Toast.makeText(this, "Não está logado", Toast.LENGTH_LONG).show()
         }
     }
@@ -136,9 +133,8 @@ class MainActivity : AppCompatActivity() {
 
     fun intentAppActivity() {
 
-        val intent = Intent(this, ListagemActivity::class.java)
+        val intent = Intent(this, AppActivity::class.java)
         startActivity(intent)
         finishAfterTransition()
-
     }
 }
