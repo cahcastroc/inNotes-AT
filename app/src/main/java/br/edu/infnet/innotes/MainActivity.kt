@@ -1,6 +1,7 @@
 package br.edu.infnet.innotes
 
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.InputType
@@ -35,13 +36,13 @@ class MainActivity : AppCompatActivity() {
 
                 appAuth
                     .signInWithEmailAndPassword(etEmail.text.toString(), etSenha.text.toString())
-                    .addOnCompleteListener {
+                    .addOnCompleteListener(this) {
                         if (it.isSuccessful) {
                             appUser = appAuth.currentUser
 
                             val emailUsuario = "${appUser!!.email}"
                             val ultimoLogin = "${Date(appUser!!.metadata!!.lastSignInTimestamp)}"
-                            intentAppActivity(emailUsuario, ultimoLogin)
+                            intentAppActivity()
 
                         } else {
                             appUser = null
@@ -73,7 +74,7 @@ class MainActivity : AppCompatActivity() {
                     etEmail.text.toString(),
                     etSenha.text.toString()
                 )
-                    .addOnCompleteListener {
+                    .addOnCompleteListener(this) {
                         if (it.isSuccessful) {
                             appUser = appAuth.currentUser
                             Toast.makeText(
@@ -84,7 +85,7 @@ class MainActivity : AppCompatActivity() {
 
                             val emailUsuario = "${appUser!!.email}"
                             val ultimoLogin = "Esse é o seu primeiro login!"
-                            intentAppActivity(emailUsuario, ultimoLogin)
+                            intentAppActivity()
                         }
                     }.addOnFailureListener {
                         Toast.makeText(
@@ -100,17 +101,17 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-
         val currentUser = appAuth.currentUser
-        appUser = appAuth.currentUser
+        appUser = currentUser
 
-    if(currentUser != null){
-        Toast.makeText(this,"Está logado",Toast.LENGTH_LONG).show()
+        if (currentUser != null) {
+            Toast.makeText(this, "Logado: ${appUser?.email}", Toast.LENGTH_LONG).show()
+            intentAppActivity()
 
-    }else{
+        } else {
 
-        Toast.makeText(this,"Não está logado",Toast.LENGTH_LONG).show()
-    }
+            Toast.makeText(this, "Não está logado", Toast.LENGTH_LONG).show()
+        }
     }
 
 
@@ -133,11 +134,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun intentAppActivity(emailUsuario: String, ultimoLogin: String) {
+    fun intentAppActivity() {
 
         val intent = Intent(this, ListagemActivity::class.java)
-        intent.putExtra("Email", emailUsuario)
-        intent.putExtra("UltimoLogin", ultimoLogin)
         startActivity(intent)
+        finishAfterTransition()
+
     }
 }

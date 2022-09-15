@@ -13,12 +13,15 @@ class ListagemActivity : AppCompatActivity() {
 
         val button2 = findViewById<Button>(R.id.button2)
 
-        button2.setOnClickListener{
+        button2.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
+            val intent = Intent(this, MainActivity::class.java)
+
+            startActivity(intent)
 
         }
 
-
-            // Handle the back button event
-        }
     }
+
+
+}
