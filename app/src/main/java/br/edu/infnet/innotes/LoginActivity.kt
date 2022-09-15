@@ -1,14 +1,21 @@
 package br.edu.infnet.innotes
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Patterns
+
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.facebook.*
+import com.facebook.login.LoginResult
+import com.facebook.login.widget.LoginButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.ktx.Firebase
+import org.json.JSONException
+
 
 class LoginActivity : AppCompatActivity() {
 
@@ -16,15 +23,21 @@ class LoginActivity : AppCompatActivity() {
     private var appUser: FirebaseUser? = null
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+
+
 
         appAuth = FirebaseAuth.getInstance()
 
         val btLogin = findViewById<Button>(R.id.btLogin)
         val btCadastrar = findViewById<Button>(R.id.btCadastrar)
-        val btFacebook = findViewById<Button>(R.id.btFacebook)
+
+
+
 
         btLogin.setOnClickListener {
             try {
