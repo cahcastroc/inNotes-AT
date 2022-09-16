@@ -11,6 +11,11 @@ import androidx.appcompat.app.AppCompatActivity
 import com.facebook.*
 import com.facebook.login.LoginResult
 import com.facebook.login.widget.LoginButton
+import com.firebase.ui.auth.AuthUI
+import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
+import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
+import com.google.firebase.auth.FacebookAuthCredential
+import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.ktx.Firebase
@@ -22,6 +27,15 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var appAuth: FirebaseAuth
     private var appUser: FirebaseUser? = null
 
+    private lateinit var callbackManager: CallbackManager
+    private lateinit var buttonFacebookLogin: LoginButton
+
+
+    private val signInLauncher = registerForActivityResult(
+        FirebaseAuthUIActivityResultContract()
+    ) { res ->
+        this.onSignInResult(res)
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,14 +43,22 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
 
-
-
         appAuth = FirebaseAuth.getInstance()
+
+        val providers = arrayListOf(
+            AuthUI.IdpConfig.FacebookBuilder().build(),
+       )
+        val signInIntent = AuthUI.getInstance()
+            .createSignInIntentBuilder()
+            .setAvailableProviders(providers)
+            .build()
+        signInLauncher.launch(signInIntent)
+
+
+        //------------
 
         val btLogin = findViewById<Button>(R.id.btLogin)
         val btCadastrar = findViewById<Button>(R.id.btCadastrar)
-
-
 
 
         btLogin.setOnClickListener {
@@ -71,6 +93,8 @@ class LoginActivity : AppCompatActivity() {
             }
 
         }
+
+
 
         btCadastrar.setOnClickListener {
 
@@ -108,12 +132,20 @@ class LoginActivity : AppCompatActivity() {
         }
 
 
+        //---------------fACEBOOK
+
+//
+//        val x = FacebookLoginActivity()
+//        Toast.makeText(this, "Facebook ${x}", Toast.LENGTH_LONG).show()
+
+
     }
 
     override fun onStart() {
         super.onStart()
         val currentUser = appAuth.currentUser
         appUser = currentUser
+
 
         if (currentUser != null) {
             Toast.makeText(this, "Logado: ${appUser?.email}", Toast.LENGTH_LONG).show()
@@ -149,5 +181,18 @@ class LoginActivity : AppCompatActivity() {
         val intent = Intent(this, AppActivity::class.java)
         startActivity(intent)
         finishAfterTransition()
+    }
+
+    private fun onSignInResult(res: FirebaseAuthUIAuthenticationResult?) {
+        val response = res?.idpResponse
+        if (res != null) {
+            if (res.resultCode == RESULT_OK) {
+                val user = FirebaseAuth.getInstance().currentUser
+
+                if (user != null) {
+                    Toast.makeText(this, "${user.email}, aqui o user", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
     }
 }
