@@ -27,16 +27,14 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var appAuth: FirebaseAuth
     private var appUser: FirebaseUser? = null
 
-    private lateinit var callbackManager: CallbackManager
-    private lateinit var buttonFacebookLogin: LoginButton
 
-
+    //-----------------------Facebook
     private val signInLauncher = registerForActivityResult(
         FirebaseAuthUIActivityResultContract()
     ) { res ->
         this.onSignInResult(res)
     }
-
+    //-----------------------------------------------
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,17 +43,22 @@ class LoginActivity : AppCompatActivity() {
 
         appAuth = FirebaseAuth.getInstance()
 
+        //-------------------------------Facebook
         val providers = arrayListOf(
             AuthUI.IdpConfig.FacebookBuilder().build(),
-       )
-        val signInIntent = AuthUI.getInstance()
-            .createSignInIntentBuilder()
-            .setAvailableProviders(providers)
-            .build()
-        signInLauncher.launch(signInIntent)
+        )
 
+        val btFacebook = findViewById<Button>(R.id.btFacebook)
 
-        //------------
+        btFacebook.setOnClickListener {
+            val signInIntent = AuthUI.getInstance()
+                .createSignInIntentBuilder()
+                .setAvailableProviders(providers)
+                .build()
+            signInLauncher.launch(signInIntent)
+        }
+        //----------------------------------------------
+
 
         val btLogin = findViewById<Button>(R.id.btLogin)
         val btCadastrar = findViewById<Button>(R.id.btCadastrar)
@@ -95,7 +98,6 @@ class LoginActivity : AppCompatActivity() {
         }
 
 
-
         btCadastrar.setOnClickListener {
 
             val etEmail = findViewById<EditText>(R.id.etEmail)
@@ -128,17 +130,7 @@ class LoginActivity : AppCompatActivity() {
                         ).show()
                     }
             }
-
         }
-
-
-        //---------------fACEBOOK
-
-//
-//        val x = FacebookLoginActivity()
-//        Toast.makeText(this, "Facebook ${x}", Toast.LENGTH_LONG).show()
-
-
     }
 
     override fun onStart() {
@@ -150,9 +142,6 @@ class LoginActivity : AppCompatActivity() {
         if (currentUser != null) {
             Toast.makeText(this, "Logado: ${appUser?.email}", Toast.LENGTH_LONG).show()
             intentAppActivity()
-            ///--------
-        } else {
-            Toast.makeText(this, "Não está logado", Toast.LENGTH_LONG).show()
         }
     }
 
@@ -190,7 +179,12 @@ class LoginActivity : AppCompatActivity() {
                 val user = FirebaseAuth.getInstance().currentUser
 
                 if (user != null) {
-                    Toast.makeText(this, "${user.email}, aqui o user", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        this,
+                        "Login através do facebook: ${user.email}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    intentAppActivity()
                 }
             }
         }
