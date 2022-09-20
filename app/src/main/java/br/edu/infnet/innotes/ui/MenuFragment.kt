@@ -1,5 +1,6 @@
 package br.edu.infnet.innotes.ui
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -31,6 +32,12 @@ class MenuFragment : Fragment() {
 
         btVisualizar.setOnClickListener{
             navController.navigate(R.id.action_menuFragment_to_listagemFragment)
+        }
+
+        val btFerramentas = view.findViewById<Button>(R.id.btFerramentas)
+        btFerramentas.setOnClickListener {
+            val intent = Intent(context, ApiActivity::class.java)
+            startActivity(intent)
         }
 
 

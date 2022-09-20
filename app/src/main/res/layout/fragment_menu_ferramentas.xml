@@ -2,47 +2,34 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bcmenu"
+    android:background="@drawable/bcmenuapi"
     android:padding="20dp"
-    tools:context=".ui.MenuFragment">
+    tools:context=".ui.MenuFerramentasFragment">
 
     <Button
-        android:id="@+id/btInserir"
+        android:id="@+id/btApiLivro"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="260dp"
+        android:layout_marginTop="200dp"
         android:background="@drawable/btnapp"
         android:padding="10dp"
-        android:text="Inserir Anotação"
+        android:text="Consulta Bibliográfica"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.529"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/btVisualizar"
+        android:id="@+id/btApiDicionario"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="50dp"
         android:background="@drawable/btnapp"
         android:padding="10dp"
-        android:text="Visualizar anotações"
+        android:text="Dicionário"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btInserir" />
-
-    <Button
-        android:id="@+id/btFerramentas"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/btnapp"
-        android:padding="10dp"
-        android:text="Ferramentas de estudo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btVisualizar" />
-
+        app:layout_constraintTop_toBottomOf="@+id/btApiLivro" />
 </androidx.constraintlayout.widget.ConstraintLayout>

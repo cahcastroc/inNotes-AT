@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navapi"
+    app:startDestination="@id/menuFerramentasFragment">
+
+    <fragment
+        android:id="@+id/menuFerramentasFragment"
+        android:name="br.edu.infnet.innotes.ui.MenuFerramentasFragment"
+        android:label="fragment_menu_ferramentas"
+        tools:layout="@layout/fragment_menu_ferramentas" >
+        <action
+            android:id="@+id/action_menuFerramentasFragment_to_livrosFragment"
+            app:destination="@id/livrosFragment" />
+        <action
+            android:id="@+id/action_menuFerramentasFragment_to_dicionarioFragment"
+            app:destination="@id/dicionarioFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/livrosFragment"
+        android:name="br.edu.infnet.innotes.ui.LivrosFragment"
+        android:label="fragment_livros"
+        tools:layout="@layout/fragment_livros" />
+    <fragment
+        android:id="@+id/dicionarioFragment"
+        android:name="br.edu.infnet.innotes.ui.DicionarioFragment"
+        android:label="fragment_dicionario"
+        tools:layout="@layout/fragment_dicionario" />
+</navigation>

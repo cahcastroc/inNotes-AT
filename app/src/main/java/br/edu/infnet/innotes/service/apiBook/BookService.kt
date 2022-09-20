@@ -2,6 +2,7 @@ package br.edu.infnet.innotes.service.apiBook
 
 import android.util.Log
 import br.edu.infnet.innotes.domain.apiBook.QueryResult
+import br.edu.infnet.innotes.service.ServiceListener
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -11,7 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class BookService {
 
     private  var api: BookApi
-    private lateinit var listener: BookServiceListener
+    private lateinit var listener: ServiceListener
 
     init{
         val retrofit = Retrofit.Builder()
@@ -22,7 +23,7 @@ class BookService {
     }
 
 
-    fun setBookServiceListener(listener: BookServiceListener){
+    fun setBookServiceListener(listener: ServiceListener){
         this.listener = listener
     }
 
@@ -30,8 +31,6 @@ class BookService {
 
         if(type.isNotEmpty() && query.isNotEmpty()){
             var queryWithType = ""
-
-            //"Converte" o valor do Spinner
 
             when(type){
                 "Titulo" -> queryWithType = "intitle:"
