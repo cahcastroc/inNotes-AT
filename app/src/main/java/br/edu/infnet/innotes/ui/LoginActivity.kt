@@ -38,6 +38,9 @@ class LoginActivity : AppCompatActivity() {
         appAuth = FirebaseAuth.getInstance()
 
         //-------------------------------Facebook
+
+        //Login para teste da funcionalidade -> aprendizagemjava@gmail.com (SpringBoot2022)
+
         val providers = arrayListOf(
             AuthUI.IdpConfig.FacebookBuilder().build(),
         )
@@ -80,6 +83,12 @@ class LoginActivity : AppCompatActivity() {
                                 Toast.LENGTH_LONG
                             ).show()
                         }
+                    }.addOnFailureListener(this) {
+                        Toast.makeText(
+                            this,
+                            "${it.message}",
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
             } catch (ex: IllegalArgumentException) {
                 Toast.makeText(
@@ -88,7 +97,6 @@ class LoginActivity : AppCompatActivity() {
                     Toast.LENGTH_LONG
                 ).show()
             }
-
         }
 
 
@@ -115,6 +123,12 @@ class LoginActivity : AppCompatActivity() {
                             val emailUsuario = "${appUser!!.email}"
                             val ultimoLogin = "Esse é o seu primeiro login!"
                             intentAppActivity()
+                        } else{ //aqui
+                            Toast.makeText(
+                                this,
+                                "Cadastro deu ruim!",
+                                Toast.LENGTH_LONG
+                            ).show()
                         }
                     }.addOnFailureListener {
                         Toast.makeText(
