@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav"
+    app:startDestination="@id/menuFragment">
+
+    <fragment
+        android:id="@+id/menuFragment"
+        android:name="br.edu.infnet.innotes.ui.MenuFragment"
+        android:label="fragment_menu"
+        tools:layout="@layout/fragment_menu" >
+        <action
+            android:id="@+id/action_menuFragment_to_criaAnotacaoFragment"
+            app:destination="@id/criaAnotacaoFragment" />
+        <action
+            android:id="@+id/action_menuFragment_to_listagemFragment"
+            app:destination="@id/listagemFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/criaAnotacaoFragment"
+        android:name="br.edu.infnet.innotes.ui.CriaAnotacaoFragment"
+        android:label="fragment_cria_anotacao"
+        tools:layout="@layout/fragment_cria_anotacao" />
+    <fragment
+        android:id="@+id/listagemFragment"
+        android:name="br.edu.infnet.innotes.ui.ListagemFragment"
+        android:label="fragment_listagem"
+        tools:layout="@layout/fragment_listagem" />
+</navigation>

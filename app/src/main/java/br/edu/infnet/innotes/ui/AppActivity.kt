@@ -1,9 +1,10 @@
-package br.edu.infnet.innotes
+package br.edu.infnet.innotes.ui
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import br.edu.infnet.innotes.R
 import com.google.firebase.auth.FirebaseAuth
 
 class AppActivity : AppCompatActivity() {
@@ -11,15 +12,7 @@ class AppActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_listagem)
 
-        val button2 = findViewById<Button>(R.id.button2)
-
-        button2.setOnClickListener {
-            FirebaseAuth.getInstance().signOut()
-            val intent = Intent(this, LoginActivity::class.java)
-
-            startActivity(intent)
-
-        }
+        
 
     }
 

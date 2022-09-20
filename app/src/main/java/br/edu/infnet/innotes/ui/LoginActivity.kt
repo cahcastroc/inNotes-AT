@@ -1,4 +1,4 @@
-package br.edu.infnet.innotes
+package br.edu.infnet.innotes.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,18 +8,12 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.facebook.*
-import com.facebook.login.LoginResult
-import com.facebook.login.widget.LoginButton
+import br.edu.infnet.innotes.R
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
-import com.google.firebase.auth.FacebookAuthCredential
-import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.ktx.Firebase
-import org.json.JSONException
 
 
 class LoginActivity : AppCompatActivity() {

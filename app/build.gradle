@@ -50,8 +50,35 @@ dependencies {
 
 //    -----facebook
 
-
     implementation 'com.facebook.android:facebook-login:latest.release'
-    implementation     'com.facebook.android:facebook-android-sdk:14.1.1'
+    implementation 'com.facebook.android:facebook-android-sdk:14.1.1'
+
+    //Nav
+    def nav_version = "2.5.2"
+
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+
+    implementation "androidx.cardview:cardview:1.0.0"
+
+    //adMob
+
+    implementation 'com.google.android.gms:play-services-ads:19.7.0'
+
+    //-------Glide
+
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.github.bumptech.glide:glide:4.13.2'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.13.2'
+
+    //Retrofit
+
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
+
+
+
+
 
 }

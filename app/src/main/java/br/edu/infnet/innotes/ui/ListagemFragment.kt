@@ -1,12 +1,11 @@
-package br.edu.infnet.innotes
+package br.edu.infnet.innotes.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
-
+import br.edu.infnet.innotes.R
 
 
 //listagem das anotações, apresentando data e título em cada linha.
@@ -21,7 +20,10 @@ class ListagemFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_listagem, container, false)
+        val view = inflater.inflate(R.layout.fragment_listagem, container, false)
+
+        return view
+
     }
 
 

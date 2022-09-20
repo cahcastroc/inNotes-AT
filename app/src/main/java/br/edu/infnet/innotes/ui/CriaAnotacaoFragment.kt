@@ -1,10 +1,11 @@
-package br.edu.infnet.innotes
+package br.edu.infnet.innotes.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import br.edu.infnet.innotes.R
 
 
 class CriaAnotacaoFragment : Fragment() {
@@ -15,7 +16,10 @@ class CriaAnotacaoFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_cria_anotacao, container, false)
+
+        val view =  inflater.inflate(R.layout.fragment_cria_anotacao, container, false)
+
+        return view
     }
 
 

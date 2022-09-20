@@ -4,13 +4,13 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
-<!--    //-&#45;&#45;&#45;&#45;FACEBOOK-->
+    <!--    //-&#45;&#45;&#45;&#45;FACEBOOK-->
 
     <string name="facebook_application_id" translatable="false">824246508733162</string>
     <!-- Facebook Application ID, prefixed by 'fb'. Enables Chrome Custom tabs. -->
     <string name="fb_login_protocol_scheme" translatable="false">fb824246508733162</string>
-<!--    <string name="facebook_app_id">824246508733162</string>-->
-<!--    <string name="fb_login_protocol_scheme">fb824246508733162</string>-->
+    <!--    <string name="facebook_app_id">824246508733162</string>-->
+    <!--    <string name="fb_login_protocol_scheme">fb824246508733162</string>-->
     <string name="facebook_client_token">f9735a4ac05d84fa6695742c336f17ad</string>
 
 
