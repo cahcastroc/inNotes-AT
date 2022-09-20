@@ -9,9 +9,9 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class BookService {
+class LivroService {
 
-    private  var api: BookApi
+    private  var api: LivroApi
     private lateinit var listener: ServiceListener
 
     init{
@@ -19,7 +19,7 @@ class BookService {
             .baseUrl("https://www.googleapis.com/books/v1/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-        api = retrofit.create(BookApi::class.java)
+        api = retrofit.create(LivroApi::class.java)
     }
 
 

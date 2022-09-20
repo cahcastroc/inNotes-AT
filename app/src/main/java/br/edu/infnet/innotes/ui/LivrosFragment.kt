@@ -1,20 +1,27 @@
 package br.edu.infnet.innotes.ui
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.Spinner
+import android.widget.*
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import br.edu.infnet.innotes.R
+import br.edu.infnet.innotes.domain.apiBook.QueryItem
 import br.edu.infnet.innotes.domain.apiBook.QueryResult
 import br.edu.infnet.innotes.service.ServiceListener
+import br.edu.infnet.innotes.service.apiBook.LivroService
+import br.edu.infnet.innotes.ui.recyclerView.LivrosAdapter
 import br.edu.infnet.innotes.ui.recyclerView.RecyclerViewItemListener
+import java.lang.NullPointerException
 
 
 class LivrosFragment : Fragment(), RecyclerViewItemListener, ServiceListener {
 
+    private val livroService = LivroService()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,12 +40,26 @@ class LivrosFragment : Fragment(), RecyclerViewItemListener, ServiceListener {
 
         //------------RecyclerView em branco
 
+        val rvResultadoLivro = view.findViewById<RecyclerView>(R.id.rvResultadoLivros)
+        rvResultadoLivro.layoutManager = GridLayoutManager(context,3)
+        val adapter = LivrosAdapter(this)
+        rvResultadoLivro.adapter = adapter
 
+        //-------Service da Api
 
+        val btPesquisar = view.findViewById<Button>(R.id.btPesquisar)
+        livroService.setBookServiceListener(this)
 
+        btPesquisar.setOnClickListener{
+            var opcaoPesquisa = spOpcoes.selectedItem.toString()
 
+            val etConsulta = view.findViewById<EditText>(R.id.etConsulta)
 
+            if(etConsulta.text.toString().isNotEmpty() || etConsulta.text.toString().isNotBlank() ){
+                livroService.queryBooks(opcaoPesquisa,etConsulta.text.toString())
+            }
 
+        }
 
 
         return view
@@ -46,19 +67,39 @@ class LivrosFragment : Fragment(), RecyclerViewItemListener, ServiceListener {
     }
 
     override fun onResponse(queryResult: QueryResult?) {
-        TODO("Not yet implemented")
+        try {
+            if (queryResult != null) {
+                val itensPesquisa = queryResult.items
+                val listaLivros = ArrayList<QueryItem>()
+                Log.i("DR3", "Resultado com ${itensPesquisa.size} itens")
+
+                for (queryItem in itensPesquisa) {
+                    listaLivros.add(queryItem)
+                }
+
+                // Recycler view com o Resultado
+                val rvResultadoLivros = view?.findViewById<RecyclerView>(R.id.rvResultadoLivros)
+                val adapter = LivrosAdapter(this)
+                adapter.listaLivros = listaLivros
+                if (rvResultadoLivros != null) {
+                    rvResultadoLivros.adapter = adapter
+                }
+            }
+        } catch (ex: NullPointerException){
+            Toast.makeText(activity,"Erro! Não localizado", Toast.LENGTH_LONG).show()
+        }
     }
 
     override fun onFailure(message: String?) {
-        TODO("Not yet implemented")
+
     }
 
     override fun itemClicked(view: View, id: String) {
-        TODO("Not yet implemented")
+
     }
 
     override fun itemLongClicked(view: View, id: String) {
-        TODO("Not yet implemented")
+        
     }
 
 

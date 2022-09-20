@@ -5,7 +5,7 @@ import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface BookApi {
+interface LivroApi {
 
     @GET("volumes")
     fun queryBooks(@Query("q") query: String?) : Call<QueryResult?>?
