@@ -8,45 +8,48 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import br.edu.infnet.innotes.R
 import br.edu.infnet.innotes.domain.apiDicionario.Dicionario
 import br.edu.infnet.innotes.service.apiDicionario.DicionarioService
 import br.edu.infnet.innotes.service.apiDicionario.DicionarioServiceListener
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class DicionarioFragment : Fragment(), DicionarioServiceListener {
 
     private val dicionarioService = DicionarioService()
+    private lateinit var etPalavra: EditText
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-       val view =  inflater.inflate(R.layout.fragment_dicionario, container, false)
 
-        val ok = view.findViewById<Button>(R.id.ok)
-        val etPalavra = view.findViewById<EditText>(R.id.etPalavra)
+        val view = inflater.inflate(R.layout.fragment_dicionario, container, false)
+
+
+        val btBuscar = view.findViewById<Button>(R.id.btBuscar)
+        etPalavra = view.findViewById<EditText>(R.id.etPalavra)
 
         dicionarioService.setDicionarioServiceListener(this)
 
-        ok.setOnClickListener { dicionarioService.consultaPalavra(etPalavra.text.toString())
+        btBuscar.setOnClickListener {
+            dicionarioService.consultaPalavra(etPalavra.text.toString())
         }
 
-
-
-
         return view
-
     }
 
     override fun onResponse(dicionario: ArrayList<Dicionario>?) {
         if (dicionario != null) {
-            val resultadoPalavra = dicionario
-
-
-
-            Log.i("DR3", "part ${resultadoPalavra[0]}")
+            val tvResultadoPalavra = requireView().findViewById<TextView>(R.id.tvResultadoPalavra)
+            val tvCabecalho = requireView().findViewById<TextView>(R.id.tvCabecalho)
+            tvResultadoPalavra.text = dicionario.toString()
+            tvCabecalho.text =
+                "Significado da palavra ${etPalavra.text.toString()}:"
+            etPalavra.setText("")
         }
     }
 
