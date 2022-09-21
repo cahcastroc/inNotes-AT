@@ -10,6 +10,7 @@ import br.edu.infnet.innotes.R
 import br.edu.infnet.innotes.domain.apiBook.QueryItem
 import com.bumptech.glide.Glide
 
+
 class LivrosAdapter(listener: RecyclerViewItemListener): RecyclerView.Adapter<LivrosAdapter.ViewHolder>() {
 
 
@@ -20,10 +21,6 @@ class LivrosAdapter(listener: RecyclerViewItemListener): RecyclerView.Adapter<Li
             this.notifyDataSetChanged()
         }
 
-
-
-
-
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         fun bindItem(livro :QueryItem,itemListener: RecyclerViewItemListener,position: Int){
 
@@ -31,7 +28,8 @@ class LivrosAdapter(listener: RecyclerViewItemListener): RecyclerView.Adapter<Li
 
             if(livro.volumeInfo.imageLinks != null && livro.volumeInfo.imageLinks!!.smallThumbnail != null){
                 val url = livro.volumeInfo.imageLinks!!.smallThumbnail.toString()
-                Glide.with(itemView.context).load(url).into(imageView)
+                Glide.with(itemView).asBitmap().load(url).into(imageView)
+
             }
 
             val tvTitulo = itemView.findViewById<TextView>(R.id.tvTitulo)

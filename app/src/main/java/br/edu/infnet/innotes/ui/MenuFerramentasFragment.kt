@@ -30,7 +30,9 @@ class MenuFerramentasFragment : Fragment() {
             navController.navigate(R.id.action_menuFerramentasFragment_to_livrosFragment)
         }
 
-
+        btApiDicionario.setOnClickListener{
+            navController.navigate(R.id.action_menuFerramentasFragment_to_dicionarioFragment)
+        }
 
 
         return view

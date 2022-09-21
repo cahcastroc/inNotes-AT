@@ -1,8 +1,8 @@
-package br.edu.infnet.innotes.service
+package br.edu.infnet.innotes.service.apiBook
 
 import br.edu.infnet.innotes.domain.apiBook.QueryResult
 
-interface ServiceListener {
+interface bookServiceListener {
 
     fun onResponse(queryResult: QueryResult?)
 

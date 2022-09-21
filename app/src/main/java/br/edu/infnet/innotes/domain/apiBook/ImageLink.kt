@@ -1,5 +1,5 @@
 package br.edu.infnet.innotes.domain.apiBook
 
-class ImageLink (
+data class ImageLink (
     var smallThumbnail: String?,
 )

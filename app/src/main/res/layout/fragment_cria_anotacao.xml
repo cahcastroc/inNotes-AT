@@ -82,7 +82,7 @@
                 android:typeface="normal" />
 
             <ImageView
-                android:id="@+id/btCamera"
+                android:id="@+id/iv"
                 android:layout_width="140dp"
                 android:layout_height="150dp"
                 android:layout_gravity="center"

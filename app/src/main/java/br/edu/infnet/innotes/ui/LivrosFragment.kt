@@ -12,14 +12,14 @@ import androidx.recyclerview.widget.RecyclerView
 import br.edu.infnet.innotes.R
 import br.edu.infnet.innotes.domain.apiBook.QueryItem
 import br.edu.infnet.innotes.domain.apiBook.QueryResult
-import br.edu.infnet.innotes.service.ServiceListener
+import br.edu.infnet.innotes.service.apiBook.bookServiceListener
 import br.edu.infnet.innotes.service.apiBook.LivroService
 import br.edu.infnet.innotes.ui.recyclerView.LivrosAdapter
 import br.edu.infnet.innotes.ui.recyclerView.RecyclerViewItemListener
 import java.lang.NullPointerException
 
 
-class LivrosFragment : Fragment(), RecyclerViewItemListener, ServiceListener {
+class LivrosFragment : Fragment(), RecyclerViewItemListener, bookServiceListener {
 
     private val livroService = LivroService()
 
@@ -99,7 +99,7 @@ class LivrosFragment : Fragment(), RecyclerViewItemListener, ServiceListener {
     }
 
     override fun itemLongClicked(view: View, id: String) {
-        
+
     }
 
 

@@ -2,7 +2,6 @@ package br.edu.infnet.innotes.service.apiBook
 
 import android.util.Log
 import br.edu.infnet.innotes.domain.apiBook.QueryResult
-import br.edu.infnet.innotes.service.ServiceListener
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -12,7 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class LivroService {
 
     private  var api: LivroApi
-    private lateinit var listener: ServiceListener
+    private lateinit var listener: bookServiceListener
 
     init{
         val retrofit = Retrofit.Builder()
@@ -23,7 +22,7 @@ class LivroService {
     }
 
 
-    fun setBookServiceListener(listener: ServiceListener){
+    fun setBookServiceListener(listener: bookServiceListener){
         this.listener = listener
     }
 
