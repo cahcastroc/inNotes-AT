@@ -1,22 +1,24 @@
 package br.edu.infnet.innotes.ui
 
 import android.Manifest
+import android.app.Activity.RESULT_OK
 import android.content.Context.LOCATION_SERVICE
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker
 import androidx.core.content.PermissionChecker.checkSelfPermission
 
@@ -35,7 +37,8 @@ class CriaAnotacaoFragment : Fragment(), LocationListener {
     private lateinit var anotacao: Anotacao
 
     val FINE_REQUEST = 5678
-    val COARSE_REQUEST = 8765
+    val CAMERA_PERMISSION_CODE = 100
+    val CAMERA_REQUEST = 1888
 //    private var localizacao: Location? = null
 
 
@@ -46,11 +49,15 @@ class CriaAnotacaoFragment : Fragment(), LocationListener {
         savedInstanceState: Bundle?
     ): View? {
 
-        val view =  inflater.inflate(R.layout.fragment_cria_anotacao, container, false)
+        val view = inflater.inflate(R.layout.fragment_cria_anotacao, container, false)
+
+        val etTitulo = view.findViewById<EditText>(R.id.etTitulo)
+        val etTexto = view.findViewById<EditText>(R.id.etTexto)
+        val ivCamera = view.findViewById<ImageView>(R.id.ivCamera)
+        val btCamera = view.findViewById<ImageButton>(R.id.btCamera)
 
 
-
-        //----View após criação da anotação
+        //----View antes da criação da anotação
         val containerView = view.findViewById<LinearLayout>(R.id.containerView)
         containerView.visibility = View.INVISIBLE
 
@@ -59,33 +66,62 @@ class CriaAnotacaoFragment : Fragment(), LocationListener {
         localizacaoPorGps()
 
 
+        val email = FirebaseAuth.getInstance().currentUser?.email
 
         //---------
 
+        val latitude = localizacaoPorGps()?.latitude.toString()
+        val longitude = localizacaoPorGps()?.longitude.toString()
+        val titulo = etTitulo.text.toString()
+        val texto = etTexto.text.toString()
+        val data = data()
 
-        val email = FirebaseAuth.getInstance().currentUser?.email
-        var data = data()
+        //---------------
+        btCamera.setOnClickListener {
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.CAMERA
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
 
-
-
-
-
-
-
-
+                //Solicita permissão
+                this.requestPermissions(arrayOf(Manifest.permission.CAMERA), CAMERA_PERMISSION_CODE)
+            } else {
+                //Chama função que executa o Intent da Câmera
+                openCamera()
+            }
+        }
 
 
         val btSalvarAnotacao = view.findViewById<Button>(R.id.btSalvarAnotacao)
 
         btSalvarAnotacao.setOnClickListener {
             containerView.visibility = View.VISIBLE
-            var latitude = localizacaoPorGps()?.latitude.toString()
-            var longitude = localizacaoPorGps()?.longitude.toString()
-            Log.i("DR3", "email: ${email}, data ${data}, local: Latitude: ${latitude} , Logitude: ${longitude}")
+
+
+            val anotacao = Anotacao(null, email, data, latitude, longitude, titulo, texto)
+            anotacaoDao.inserir(anotacao)?.addOnSuccessListener {
+                Toast.makeText(activity, "Registro salvo com sucesso", Toast.LENGTH_LONG).show()
+            }?.addOnFailureListener {
+                Toast.makeText(activity, "Erro inesperado", Toast.LENGTH_LONG).show()
+            }
+            Log.i(
+                "DR3",
+                "email: ${email}, data ${data}, local: Latitude: ${latitude} , Logitude: ${longitude}"
+            )
+
+
         }
 
 
+
+
         return view
+    }
+
+    private fun openCamera() {
+        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        this.startActivityForResult(cameraIntent, CAMERA_REQUEST)
     }
 
     private fun data(): String {
@@ -100,7 +136,7 @@ class CriaAnotacaoFragment : Fragment(), LocationListener {
 
     }
 
-    private fun localizacaoPorGps() : Location?{
+    private fun localizacaoPorGps(): Location? {
 
 
         var localizacao: Location? = null
@@ -110,7 +146,10 @@ class CriaAnotacaoFragment : Fragment(), LocationListener {
         val isServiceEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
         if (isServiceEnabled) {
 
-            if(checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
 //            if (context?.let { ActivityCompat.checkSelfPermission(it,android.Manifest.permission.ACCESS_FINE_LOCATION) }
                 == PermissionChecker.PERMISSION_GRANTED
             ) {
@@ -126,7 +165,7 @@ class CriaAnotacaoFragment : Fragment(), LocationListener {
 
             } else {
                 requestPermissions(
-                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                    arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
                     FINE_REQUEST
 
                 )
@@ -136,6 +175,11 @@ class CriaAnotacaoFragment : Fragment(), LocationListener {
         return localizacao
 
     }
+
+    private fun salvaFirestore() {
+
+    }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -143,15 +187,52 @@ class CriaAnotacaoFragment : Fragment(), LocationListener {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
-        if (requestCode == FINE_REQUEST && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            localizacaoPorGps()
+
+        if (grantResults.isNotEmpty()) {
+            if (requestCode == FINE_REQUEST) {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    localizacaoPorGps()
+                } else {
+                    Toast.makeText(activity, "Não permitido acesso ao GPS", Toast.LENGTH_LONG)
+                        .show()
+                }
+                if (requestCode == CAMERA_PERMISSION_CODE) {
+
+                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        openCamera()
+
+                    } else {
+                        Toast.makeText(activity, "Não permitido acesso à câmera", Toast.LENGTH_LONG)
+                            .show()
+                    }
+
+                }
+            }
         }
 
 
-
+//        if (grantResults.isNotEmpty() && requestCode == FINE_REQUEST && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//            localizacaoPorGps()
+//        }
+//        if(requestCode == CAMERA_PERMISSION_CODE){
+//
+//            if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+//                openCamera()
+//
+//            }else{
+//                Toast.makeText(activity, "Não permitido acesso à câmera", Toast.LENGTH_LONG).show()
+//            }
+//
+//    }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
 
-
-
+            val picture = data?.extras!!["data"] as Bitmap
+            val imgCamera = view?.findViewById<ImageView>(R.id.ivCamera)
+            imgCamera?.setImageBitmap(picture)
+        }
+    }
 }
