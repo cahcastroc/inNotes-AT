@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#73b06f"
     android:padding="20dp"
     tools:context=".ui.LoginActivity">
 
@@ -14,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:background="@drawable/retangulo"
-        android:backgroundTint="#9AFFFFFF"
+        android:backgroundTint="#81DAE1E0"
         android:drawableStart="@drawable/iconemail"
         android:ems="10"
         android:hint="E-mail"
@@ -31,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:background="@drawable/retangulo"
-        android:backgroundTint="#9AFFFFFF"
+        android:backgroundTint="#81DAE1E0"
         android:drawableStart="@drawable/iconsenha"
         android:ems="10"
         android:hint="Senha"

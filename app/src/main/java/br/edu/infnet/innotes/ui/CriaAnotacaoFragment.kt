@@ -17,18 +17,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker
-import androidx.core.content.PermissionChecker.checkSelfPermission
+import androidx.security.crypto.EncryptedFile
+import androidx.security.crypto.MasterKey
 
 
 import br.edu.infnet.innotes.R
 import br.edu.infnet.innotes.domain.Anotacao
 import br.edu.infnet.innotes.service.AnotacaoDao
 import com.google.firebase.auth.FirebaseAuth
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.concurrent.thread
 
 
 class CriaAnotacaoFragment : Fragment(), LocationListener {
@@ -36,10 +38,22 @@ class CriaAnotacaoFragment : Fragment(), LocationListener {
     private val anotacaoDao = AnotacaoDao()
     private lateinit var anotacao: Anotacao
 
+    private lateinit var etTitulo: EditText
+    private lateinit var etTexto: EditText
+    private lateinit var ivCamera : ImageView
+    private lateinit var data: String
+    private lateinit var latitude: String
+    private lateinit var longitude:String
+
+
+
     val FINE_REQUEST = 5678
     val CAMERA_PERMISSION_CODE = 100
     val CAMERA_REQUEST = 1888
-//    private var localizacao: Location? = null
+    val WRITE_REQUEST = 123
+    val READ_REQUEST = 456
+    private var localizacao: Location? = null
+
 
 
 //    private val criptografador = Criptografador()
@@ -51,9 +65,9 @@ class CriaAnotacaoFragment : Fragment(), LocationListener {
 
         val view = inflater.inflate(R.layout.fragment_cria_anotacao, container, false)
 
-        val etTitulo = view.findViewById<EditText>(R.id.etTitulo)
-        val etTexto = view.findViewById<EditText>(R.id.etTexto)
-        val ivCamera = view.findViewById<ImageView>(R.id.ivCamera)
+        etTitulo = view.findViewById(R.id.etTitulo)
+        etTexto = view.findViewById<EditText>(R.id.etTexto)
+        ivCamera = view.findViewById<ImageView>(R.id.ivCamera)
         val btCamera = view.findViewById<ImageButton>(R.id.btCamera)
 
 
@@ -63,18 +77,13 @@ class CriaAnotacaoFragment : Fragment(), LocationListener {
 
         //----------Localização
 
-        localizacaoPorGps()
+        localizacao = localizacaoPorGps()
 
 
         val email = FirebaseAuth.getInstance().currentUser?.email
 
         //---------
 
-        val latitude = localizacaoPorGps()?.latitude.toString()
-        val longitude = localizacaoPorGps()?.longitude.toString()
-        val titulo = etTitulo.text.toString()
-        val texto = etTexto.text.toString()
-        val data = data()
 
         //---------------
         btCamera.setOnClickListener {
@@ -96,12 +105,29 @@ class CriaAnotacaoFragment : Fragment(), LocationListener {
         val btSalvarAnotacao = view.findViewById<Button>(R.id.btSalvarAnotacao)
 
         btSalvarAnotacao.setOnClickListener {
+
+            if(localizacao == null){
+                localizacao = localizacaoPorGps()
+
+            }
+            latitude = localizacao?.latitude.toString()
+            longitude = localizacao?.longitude.toString()
+
+
+
+
             containerView.visibility = View.VISIBLE
 
 
-            val anotacao = Anotacao(null, email, data, latitude, longitude, titulo, texto)
+
+            data = data()
+
+
+
+            val anotacao = Anotacao(null, email, data, latitude, longitude, etTitulo.text.toString(), etTexto.text.toString())
             anotacaoDao.inserir(anotacao)?.addOnSuccessListener {
                 Toast.makeText(activity, "Registro salvo com sucesso", Toast.LENGTH_LONG).show()
+                arquivoTexto()
             }?.addOnFailureListener {
                 Toast.makeText(activity, "Erro inesperado", Toast.LENGTH_LONG).show()
             }
@@ -109,6 +135,29 @@ class CriaAnotacaoFragment : Fragment(), LocationListener {
                 "DR3",
                 "email: ${email}, data ${data}, local: Latitude: ${latitude} , Logitude: ${longitude}"
             )
+
+            //-----------------------
+
+
+
+
+//            val keyGenParameterSpec = MasterKeys.AES256_GCM_SPEC
+//            val mainKey = MasterKeys.getOrCreate(keyGenParameterSpec)
+//
+//            val fileToWrite = "${titulo}-${data}.txt"
+//            val encryptedFile = EncryptedFile.Builder(
+//                File(Environment.DIRECTORY_DOWNLOADS,fileToWrite),
+//                requireContext(),
+//                mainKey,
+//                EncryptedFile.FileEncryptionScheme.AES256_GCM_HKDF_4KB
+//            ).build()
+//
+//            val fileContent =  "Localização: \nLatitude: ${latitude}, longitude: ${longitude}\n${texto}".toByteArray(StandardCharsets.UTF_8)
+//            encryptedFile.openFileOutput().apply {
+//                write(fileContent)
+//                flush()
+//                close()
+//            }
 
 
         }
@@ -125,11 +174,11 @@ class CriaAnotacaoFragment : Fragment(), LocationListener {
     }
 
     private fun data(): String {
-        val date = Calendar.getInstance().time
+        val data = Calendar.getInstance().time
 
-        val dateTimeFormat = SimpleDateFormat("dd_MM_yyyy_HH-mm-ss", Locale.getDefault())
+        val dataFormat = SimpleDateFormat("dd_MM_yyyy_HH-mm-ss", Locale.getDefault())
 
-        return dateTimeFormat.format(date)
+        return dataFormat.format(data)
     }
 
     override fun onLocationChanged(p0: Location) {
@@ -142,30 +191,33 @@ class CriaAnotacaoFragment : Fragment(), LocationListener {
         var localizacao: Location? = null
 
         var locationManager = requireContext().getSystemService(LOCATION_SERVICE) as LocationManager
-//        val locationManager = context?.getSystemService(LOCATION_SERVICE) as LocationManager
-        val isServiceEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-        if (isServiceEnabled) {
+        val servicoAtivado = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+        if (servicoAtivado) {
 
             if (ContextCompat.checkSelfPermission(
                     requireContext(),
                     Manifest.permission.ACCESS_FINE_LOCATION
-                )
-//            if (context?.let { ActivityCompat.checkSelfPermission(it,android.Manifest.permission.ACCESS_FINE_LOCATION) }
-                == PermissionChecker.PERMISSION_GRANTED
+                ) == PermissionChecker.PERMISSION_GRANTED
             ) {
-                locationManager.requestLocationUpdates(
-                    LocationManager.GPS_PROVIDER,
-                    2000L,
-                    0f,
-                    this
-                )
+//                locationManager.requestLocationUpdates(
+//                    LocationManager.GPS_PROVIDER,
+//                    2000L,
+//                    0f,
+//                    this
+//                )
+
+
 
                 localizacao = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
 
 
+
+//                localizacao = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+
+
             } else {
                 requestPermissions(
-                    arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                     FINE_REQUEST
 
                 )
@@ -176,9 +228,33 @@ class CriaAnotacaoFragment : Fragment(), LocationListener {
 
     }
 
-    private fun salvaFirestore() {
+    private fun arquivoTexto() {
+        val masterKey = MasterKey.Builder(requireContext())
+            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+            .build()
 
+        val file = File(requireActivity().filesDir,"${etTitulo.text}-${data}.txt")
+        Log.i(
+            "DR3",
+            "local: ${latitude} - ${longitude}, data ${data}, titulo: ${etTitulo.text}, texto: ${etTexto.text}"
+        )
+
+        if(file.exists()){
+            file.delete()
+        }
+        val encryptedFile = EncryptedFile.Builder(
+            requireContext(),
+            file,
+            masterKey,
+            EncryptedFile.FileEncryptionScheme.AES256_GCM_HKDF_4KB
+        ).build()
+        val fos = encryptedFile.openFileOutput()
+
+        fos.write("Localização: \nLatitude: ${localizacao?.latitude.toString()}, longitude: ${localizacao?.longitude}\n${etTexto.text}".toByteArray())
+        fos.close()
     }
+
+
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -187,8 +263,8 @@ class CriaAnotacaoFragment : Fragment(), LocationListener {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
-
-        if (grantResults.isNotEmpty()) {
+//
+//        if (grantResults.isNotEmpty()) {
             if (requestCode == FINE_REQUEST) {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     localizacaoPorGps()
@@ -197,7 +273,6 @@ class CriaAnotacaoFragment : Fragment(), LocationListener {
                         .show()
                 }
                 if (requestCode == CAMERA_PERMISSION_CODE) {
-
                     if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                         openCamera()
 
@@ -208,31 +283,39 @@ class CriaAnotacaoFragment : Fragment(), LocationListener {
 
                 }
             }
-        }
-
-
-//        if (grantResults.isNotEmpty() && requestCode == FINE_REQUEST && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//            localizacaoPorGps()
 //        }
-//        if(requestCode == CAMERA_PERMISSION_CODE){
-//
-//            if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
-//                openCamera()
-//
-//            }else{
-//                Toast.makeText(activity, "Não permitido acesso à câmera", Toast.LENGTH_LONG).show()
-//            }
-//
-//    }
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
 
-            val picture = data?.extras!!["data"] as Bitmap
+            val imgBitmap = data?.extras!!["data"] as Bitmap
             val imgCamera = view?.findViewById<ImageView>(R.id.ivCamera)
-            imgCamera?.setImageBitmap(picture)
+            val img = imgCamera?.setImageBitmap(imgBitmap)
+
+//            val masterKey = MasterKey.Builder(requireContext())
+//                .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+//                .build()
+//
+//            val file = File(requireActivity().filesDir,"$${data}.fig")
+//
+//            if(file.exists()){
+//                file.delete()
+//            }
+//            val encryptedFile = EncryptedFile.Builder(
+//                requireContext(),
+//                file,
+//                masterKey,
+//                EncryptedFile.FileEncryptionScheme.AES256_GCM_HKDF_4KB
+//            ).build()
+//            val fos = encryptedFile.openFileOutput()
+//
+//            fos.write(img.toString().toByteArray())
+//            fos.close()
+
+
         }
     }
 }
