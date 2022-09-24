@@ -14,6 +14,7 @@ import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import kotlin.concurrent.thread
 
 
 class LoginActivity : AppCompatActivity() {
@@ -23,6 +24,7 @@ class LoginActivity : AppCompatActivity() {
 
 
     //-----------------------Facebook
+
     private val signInLauncher = registerForActivityResult(
         FirebaseAuthUIActivityResultContract()
     ) { res ->
@@ -34,12 +36,9 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-
         appAuth = FirebaseAuth.getInstance()
 
         //-------------------------------Facebook
-
-        //Login para teste da funcionalidade -> aprendizagemjava@gmail.com (SpringBoot2022)
 
         val providers = arrayListOf(
             AuthUI.IdpConfig.FacebookBuilder().build(),
@@ -48,11 +47,13 @@ class LoginActivity : AppCompatActivity() {
         val btFacebook = findViewById<Button>(R.id.btFacebook)
 
         btFacebook.setOnClickListener {
+
             val signInIntent = AuthUI.getInstance()
                 .createSignInIntentBuilder()
                 .setAvailableProviders(providers)
                 .build()
             signInLauncher.launch(signInIntent)
+
         }
         //----------------------------------------------
 
@@ -120,20 +121,12 @@ class LoginActivity : AppCompatActivity() {
                                 Toast.LENGTH_LONG
                             ).show()
 
-                            val emailUsuario = "${appUser!!.email}"
-                            val ultimoLogin = "Esse é o seu primeiro login!"
                             intentAppActivity()
-                        } else{ //aqui
-                            Toast.makeText(
-                                this,
-                                "Cadastro deu ruim!",
-                                Toast.LENGTH_LONG
-                            ).show()
                         }
                     }.addOnFailureListener {
                         Toast.makeText(
                             this,
-                            "Processo inválido. Caso seja cadastrado clique no botão de login.",
+                            "${it.message}",
                             Toast.LENGTH_LONG
                         ).show()
                     }
@@ -143,6 +136,7 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+
         val currentUser = appAuth.currentUser
         appUser = currentUser
 

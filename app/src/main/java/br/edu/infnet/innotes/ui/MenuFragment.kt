@@ -18,7 +18,7 @@ class MenuFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+
         val view = inflater.inflate(R.layout.fragment_menu, container, false)
 
         val navController = this.findNavController()
@@ -26,11 +26,11 @@ class MenuFragment : Fragment() {
         val btInserir = view.findViewById<Button>(R.id.btInserir)
         val btVisualizar = view.findViewById<Button>(R.id.btVisualizar)
 
-        btInserir.setOnClickListener{
+        btInserir.setOnClickListener {
             navController.navigate(R.id.action_menuFragment_to_criaAnotacaoFragment)
         }
 
-        btVisualizar.setOnClickListener{
+        btVisualizar.setOnClickListener {
             navController.navigate(R.id.action_menuFragment_to_listagemFragment)
         }
 
@@ -39,10 +39,6 @@ class MenuFragment : Fragment() {
             val intent = Intent(context, ApiActivity::class.java)
             startActivity(intent)
         }
-
-
-
-
         return view
     }
 
