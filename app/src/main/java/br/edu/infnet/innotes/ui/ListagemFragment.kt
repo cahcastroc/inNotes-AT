@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.edu.infnet.innotes.R
@@ -35,6 +37,7 @@ class ListagemFragment : Fragment(), RecyclerViewItemListener {
     private var appUser: FirebaseUser? = null
     private val anotacaoDao = AnotacaoDao()
     private lateinit var adapter: AnotacoesAdapter
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -114,9 +117,6 @@ class ListagemFragment : Fragment(), RecyclerViewItemListener {
 
     }
 
-    override fun itemLongClicked(view: View, id: String) {
-
-    }
 
     override fun itemDeletar(view: View, id: String) {
         anotacaoDao.deletar(id).addOnSuccessListener {
@@ -126,6 +126,11 @@ class ListagemFragment : Fragment(), RecyclerViewItemListener {
             Toast.makeText(requireContext(), "Erro ao deletar", Toast.LENGTH_LONG).show()
         }
 
+    }
+
+    override fun itemEditar(view: View, id: String) {
+        val bundle = bundleOf("id" to id )
+        findNavController().navigate(R.id.action_listagemFragment_to_editFragment,bundle)
     }
 
 

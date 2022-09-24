@@ -30,7 +30,11 @@
         android:id="@+id/listagemFragment"
         android:name="br.edu.infnet.innotes.ui.ListagemFragment"
         android:label="fragment_listagem"
-        tools:layout="@layout/fragment_listagem" />
+        tools:layout="@layout/fragment_listagem" >
+        <action
+            android:id="@+id/action_listagemFragment_to_editFragment"
+            app:destination="@id/editFragment" />
+    </fragment>
     <fragment
         android:id="@+id/listaArquivosFragment"
         android:name="br.edu.infnet.innotes.ui.ListaArquivosFragment"
@@ -39,5 +43,14 @@
         <action
             android:id="@+id/action_listaArquivosFragment_to_menuFragment"
             app:destination="@id/menuFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editFragment"
+        android:name="br.edu.infnet.innotes.ui.EditFragment"
+        android:label="fragment_edit"
+        tools:layout="@layout/fragment_edit" >
+        <action
+            android:id="@+id/action_editFragment_to_listagemFragment"
+            app:destination="@id/listagemFragment" />
     </fragment>
 </navigation>

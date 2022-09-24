@@ -91,18 +91,19 @@ class LivrosFragment : Fragment(), RecyclerViewItemListener, bookServiceListener
     }
 
     override fun onFailure(message: String?) {
-
+        Toast.makeText(activity,"$message", Toast.LENGTH_LONG).show()
     }
 
     override fun itemClicked(view: View, id: String) {
 
     }
 
-    override fun itemLongClicked(view: View, id: String) {
+
+    override fun itemDeletar(view: View, id: String) {
 
     }
 
-    override fun itemDeletar(view: View, id: String) {
+    override fun itemEditar(view: View, id: String) {
 
     }
 
