@@ -105,8 +105,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
                 android:background="@drawable/btnapp"
-                android:text="Salvar anotação" />
+                android:text="Salvar anotação"
+                app:icon="@android:drawable/ic_menu_save"
+                app:iconGravity="textStart" />
 
             <LinearLayout
                 android:id="@+id/containerView"
@@ -114,11 +117,19 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
+                <TextView
+                    android:id="@+id/tvListArquivo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Anotação salva com sucesso. Confira abaixo!"
+                    android:textAlignment="center"
+                    android:textStyle="bold" />
+
                 <TableLayout
                     android:id="@+id/tbLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="40dp">
+                    android:layout_marginTop="20dp">
 
                     <TableRow
                         android:layout_width="match_parent"
@@ -234,13 +245,31 @@
                     android:layout_gravity="center"
                     android:src="@android:drawable/ic_menu_gallery" />
 
-                <Button
-                    android:id="@+id/button2"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/tvListaArquivo"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/btnapp"
-                    android:text="Visualizar arquivos salvos" />
+                    android:layout_gravity="center|center_horizontal|center_vertical"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:drawableEnd="@android:drawable/ic_menu_set_as"
+                    android:gravity="center_horizontal|center_vertical|end"
+                    android:linksClickable="true"
+                    android:text="@string/listaArquivos"
+                    android:textAlignment="center"
+                    android:textColor="#172480"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lltext"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:orientation="horizontal">
 
             </LinearLayout>
 

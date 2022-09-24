@@ -13,5 +13,7 @@
     <!--    <string name="fb_login_protocol_scheme">fb824246508733162</string>-->
     <string name="facebook_client_token">f9735a4ac05d84fa6695742c336f17ad</string>
 
+    <string name="listaArquivos"><u>Visualizar a listagem de arquivos salvos</u></string>
+
 
 </resources>

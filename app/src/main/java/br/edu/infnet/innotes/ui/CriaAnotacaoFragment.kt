@@ -22,6 +22,7 @@ import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker
 import androidx.core.graphics.drawable.toDrawable
+import androidx.navigation.fragment.findNavController
 import androidx.security.crypto.EncryptedFile
 import androidx.security.crypto.MasterKey
 
@@ -62,7 +63,7 @@ class CriaAnotacaoFragment : Fragment(), LocationListener {
 
         val view = inflater.inflate(R.layout.fragment_cria_anotacao, container, false)
 
-        etTitulo = view.findViewById(R.id.etTitulo)
+        etTitulo = view.findViewById<EditText>(R.id.etTitulo)
         etTexto = view.findViewById<EditText>(R.id.etTexto)
         imgCamera = view.findViewById<ImageView>(R.id.ivCamera)
         val btCamera = view.findViewById<ImageButton>(R.id.btCamera)
@@ -70,6 +71,8 @@ class CriaAnotacaoFragment : Fragment(), LocationListener {
         //----View antes da criação da anotação
         val containerView = view.findViewById<LinearLayout>(R.id.containerView)
         containerView.visibility = View.INVISIBLE
+
+
 
 
         localizacao = localizacaoPorGps()
@@ -121,7 +124,16 @@ class CriaAnotacaoFragment : Fragment(), LocationListener {
             )
             anotacaoDao.inserir(anotacao)?.addOnSuccessListener {
                 Toast.makeText(activity, "Registro salvo com sucesso", Toast.LENGTH_LONG).show()
+
                 salvaArquivoTxt()
+                exibeDadosAnotacao()
+                containerView.visibility = View.VISIBLE
+
+
+                etTitulo.setText("")
+                etTexto.setText("")
+
+
             }?.addOnFailureListener {
                 Toast.makeText(activity, "Erro inesperado", Toast.LENGTH_LONG).show()
             }
@@ -132,13 +144,14 @@ class CriaAnotacaoFragment : Fragment(), LocationListener {
             exibeDadosAnotacao()
             containerView.visibility = View.VISIBLE
             //-----------
-
-            etTitulo.setText("")
-            etTexto.setText("")
-
             imgCamera.setImageResource(android.R.drawable.ic_menu_gallery)
 
+        }
 
+        val tvListaArquivo = view.findViewById<TextView>(R.id.tvListaArquivo)
+
+        tvListaArquivo.setOnClickListener {
+            findNavController().navigate(R.id.action_criaAnotacaoFragment_to_listaArquivosFragment)
         }
 
         return view

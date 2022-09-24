@@ -41,6 +41,9 @@ class AnotacaoDao {
         return db.collection(collection).document(id).delete()
     }
 
+    fun editar(id:String, titulo:String,texto:String): Task<Void>?{
+        return db.collection(collection).document(id).update("titulo",titulo, "texto",texto)
+    }
 
 
 }

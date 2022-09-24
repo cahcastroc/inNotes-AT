@@ -1,11 +1,11 @@
 package br.edu.infnet.innotes.domain
 
 data class Anotacao (
-    var id: String? = null, //auto
-    var email: String? = null, //auth
-    var data:  String? = null, //na hora que salvar
-    var latitude: String? = null, //na hora que salvar
-    var longitude: String? = null, //na hora que salvar
+    var id: String? = null,
+    var email: String? = null,
+    var data:  String? = null,
+    var latitude: String? = null,
+    var longitude: String? = null,
     var titulo: String? = null,
     var texto: String? = null,
 

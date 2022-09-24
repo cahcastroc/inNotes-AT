@@ -21,10 +21,23 @@
         android:id="@+id/criaAnotacaoFragment"
         android:name="br.edu.infnet.innotes.ui.CriaAnotacaoFragment"
         android:label="fragment_cria_anotacao"
-        tools:layout="@layout/fragment_cria_anotacao" />
+        tools:layout="@layout/fragment_cria_anotacao" >
+        <action
+            android:id="@+id/action_criaAnotacaoFragment_to_listaArquivosFragment"
+            app:destination="@id/listaArquivosFragment" />
+    </fragment>
     <fragment
         android:id="@+id/listagemFragment"
         android:name="br.edu.infnet.innotes.ui.ListagemFragment"
         android:label="fragment_listagem"
         tools:layout="@layout/fragment_listagem" />
+    <fragment
+        android:id="@+id/listaArquivosFragment"
+        android:name="br.edu.infnet.innotes.ui.ListaArquivosFragment"
+        android:label="fragment_lista_arquivos"
+        tools:layout="@layout/fragment_lista_arquivos" >
+        <action
+            android:id="@+id/action_listaArquivosFragment_to_menuFragment"
+            app:destination="@id/menuFragment" />
+    </fragment>
 </navigation>
