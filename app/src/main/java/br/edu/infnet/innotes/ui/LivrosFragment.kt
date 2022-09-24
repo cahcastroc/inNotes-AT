@@ -102,5 +102,9 @@ class LivrosFragment : Fragment(), RecyclerViewItemListener, bookServiceListener
 
     }
 
+    override fun itemDeletar(view: View, id: String) {
+
+    }
+
 
 }

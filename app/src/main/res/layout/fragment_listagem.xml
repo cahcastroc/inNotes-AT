@@ -73,14 +73,6 @@
                 android:layout_marginStart="140dp"
                 android:text="Sair" />
 
-            <com.google.android.gms.ads.AdView
-                android:id="@+id/adView"
-                android:layout_width="406dp"
-                android:layout_height="92dp"
-                android:layout_marginTop="50dp"
-                ads:adSize="BANNER"
-                ads:adUnitId="ca-app-pub-3940256099942544/6300978111" />
-
             <TextView
                 android:id="@+id/textView15"
                 android:layout_width="match_parent"
@@ -98,6 +90,20 @@
                 android:layout_marginTop="50dp">
 
             </androidx.recyclerview.widget.RecyclerView>
+
+            <com.google.android.gms.ads.AdView
+                android:id="@+id/adView"
+                android:layout_width="406dp"
+                android:layout_height="92dp"
+                android:layout_marginTop="50dp"
+                ads:adSize="BANNER"
+                ads:adUnitId="ca-app-pub-3940256099942544/6300978111" />
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Button" />
 
         </LinearLayout>
     </ScrollView>

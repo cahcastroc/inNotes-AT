@@ -8,7 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import br.edu.infnet.innotes.R
+import br.edu.infnet.innotes.domain.Anotacao
+import br.edu.infnet.innotes.service.AnotacaoDao
+import br.edu.infnet.innotes.ui.recyclerView.AnotacoesAdapter
+import br.edu.infnet.innotes.ui.recyclerView.RecyclerViewItemListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
@@ -22,10 +29,12 @@ import java.util.*
 //O Banner será exibido na tela de listagem, junto a um botão para desbloqueio da versão Premium.
 //Listagem -
 
-class ListagemFragment : Fragment() {
+class ListagemFragment : Fragment(), RecyclerViewItemListener {
 
     private lateinit var appAuth: FirebaseAuth
     private var appUser: FirebaseUser? = null
+    private val anotacaoDao = AnotacaoDao()
+    private lateinit var adapter: AnotacoesAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -64,8 +73,58 @@ class ListagemFragment : Fragment() {
 
       //--------------------------
 
+        atualizar()
+
+
+
 
         return view
+
+    }
+
+
+    private fun atualizar(){
+
+
+        if (appUser != null){
+            anotacaoDao.anotacoesUsuario(appUser!!.email!!).addOnSuccessListener {
+                val anotacoesUsuario = ArrayList<Anotacao>()
+
+                for (documento in it) {
+                    var anotacao = documento.toObject(Anotacao::class.java)//
+                   anotacoesUsuario.add(anotacao)
+                }
+
+                val rvAnotacoesUsuario = view?.findViewById<RecyclerView>(R.id.rvLista)
+                rvAnotacoesUsuario?.layoutManager = LinearLayoutManager(context)
+                adapter = AnotacoesAdapter(this)
+                adapter.listaAnotacao = anotacoesUsuario
+                rvAnotacoesUsuario?.adapter = adapter
+
+
+            }.addOnFailureListener {
+                Toast.makeText(activity, "Falha", Toast.LENGTH_LONG).show()
+            }
+        }
+
+
+    }
+
+    override fun itemClicked(view: View, id: String) {
+
+    }
+
+    override fun itemLongClicked(view: View, id: String) {
+
+    }
+
+    override fun itemDeletar(view: View, id: String) {
+        anotacaoDao.deletar(id).addOnSuccessListener {
+            atualizar()
+            Toast.makeText(requireContext(), "Item deletado", Toast.LENGTH_LONG).show()
+        }.addOnFailureListener {
+            Toast.makeText(requireContext(), "Erro ao deletar", Toast.LENGTH_LONG).show()
+        }
 
     }
 

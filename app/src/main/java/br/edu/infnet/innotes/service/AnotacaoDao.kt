@@ -46,4 +46,10 @@ class AnotacaoDao {
     }
 
 
+    fun anotacoesUsuario(email: String): Task<QuerySnapshot> {
+        return db.collection(collection).whereEqualTo("email", email).get()
+
+    }
+
+
 }

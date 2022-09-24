@@ -257,9 +257,11 @@ class CriaAnotacaoFragment : Fragment(), LocationListener {
 
 
     private fun salvaArquivoTxt() {
-        val masterKey = MasterKey.Builder(requireContext())
+        val masterKey = MasterKey.Builder(requireContext(), MasterKey.DEFAULT_MASTER_KEY_ALIAS)
             .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
             .build()
+
+
 
         val file = File(requireActivity().filesDir, "${etTitulo.text}-${date}.txt")
 
@@ -294,7 +296,7 @@ class CriaAnotacaoFragment : Fragment(), LocationListener {
     }
 
     private fun salvaArquivoFig(bitmap: Bitmap?) {
-        val masterKey = MasterKey.Builder(requireContext())
+        val masterKey = MasterKey.Builder(requireContext(), MasterKey.DEFAULT_MASTER_KEY_ALIAS)
             .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
             .build()
 
