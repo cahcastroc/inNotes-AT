@@ -1,18 +1,19 @@
 package br.edu.infnet.innotes.ui
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.ListView
+import android.widget.*
+import androidx.security.crypto.EncryptedFile
+import androidx.security.crypto.MasterKey
 import br.edu.infnet.innotes.R
 import java.io.File
 
 
-class ListaArquivosFragment : Fragment() {
+class ListaArquivosFragment : Fragment(),AdapterView.OnItemClickListener {
 
 
     override fun onCreateView(
@@ -38,6 +39,7 @@ class ListaArquivosFragment : Fragment() {
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, nomesArquivos)
         listArquivos.adapter = adapter
         listArquivos.choiceMode = ListView.CHOICE_MODE_SINGLE
+        listArquivos.onItemClickListener = this
 
 
 
@@ -45,7 +47,30 @@ class ListaArquivosFragment : Fragment() {
         return view
     }
 
+    override fun onItemClick(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+        var items :String = p0?.getItemAtPosition(p2) as String
 
+        val masterKey = MasterKey.Builder(requireContext())
+            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+            .build()
+
+        val arquivo = File(requireActivity().filesDir,"$items")
+
+        val arquivoCriptografado = EncryptedFile.Builder(
+            requireContext(),
+            arquivo,
+            masterKey,
+            EncryptedFile.FileEncryptionScheme.AES256_GCM_HKDF_4KB
+        ).build()
+
+        val fis = arquivoCriptografado.openFileInput()
+        val bytes = fis.readBytes()
+
+        Log.i("AT","Conteúdo do arquivo descriptografado: ${String(bytes)}")
+
+
+
+    }
 
 
 }

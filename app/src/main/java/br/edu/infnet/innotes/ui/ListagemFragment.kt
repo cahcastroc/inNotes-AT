@@ -97,7 +97,6 @@ class ListagemFragment : Fragment(), RecyclerViewItemListener {
             }
             val adContainer = view.findViewById<LinearLayout>(R.id.adContainer)
             adContainer.visibility = View.INVISIBLE
-
         }
 
 
