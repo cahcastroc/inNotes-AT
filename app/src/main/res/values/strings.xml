@@ -52,6 +52,12 @@
     <string name="icone_deletar">icone deletar</string>
     <string name="icone_editar">icone editar</string>
     <string name="icone_alerta_imagem">icone alerta imagem</string>
+    <string name="sair">Sair</string>
+    <string name="anota_es_de_estudo">Anotações de estudo:</string>
+    <string name="vers_o_premium">Versão premium</string>
+    <string name="ltimo_login">Último login:</string>
+    <string name="tvultimologin">tvUltimoLogin</string>
+    <string name="tvusuario">tvUsuario</string>
 
 
 </resources>

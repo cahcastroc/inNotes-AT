@@ -7,8 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import br.edu.infnet.innotes.R
 import br.edu.infnet.innotes.domain.Anotacao
 import br.edu.infnet.innotes.service.AnotacaoDao
+import br.edu.infnet.innotes.service.billing.Loja
 import br.edu.infnet.innotes.ui.recyclerView.AnotacoesAdapter
 import br.edu.infnet.innotes.ui.recyclerView.RecyclerViewItemListener
 import com.google.android.gms.ads.AdRequest
@@ -24,6 +27,7 @@ import com.google.android.gms.ads.MobileAds
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import java.util.*
+import kotlin.concurrent.thread
 
 
 //listagem das anotações, apresentando data e título em cada linha.
@@ -37,6 +41,7 @@ class ListagemFragment : Fragment(), RecyclerViewItemListener {
     private var appUser: FirebaseUser? = null
     private val anotacaoDao = AnotacaoDao()
     private lateinit var adapter: AnotacoesAdapter
+    private lateinit var loja : Loja
 
 
     override fun onCreateView(
@@ -46,7 +51,8 @@ class ListagemFragment : Fragment(), RecyclerViewItemListener {
 
         val view = inflater.inflate(R.layout.fragment_listagem, container, false)
 
-
+        //----Billing
+        loja = Loja(requireContext() as AppCompatActivity)
 
         //--------Logout
         val btLogout = view.findViewById<Button>(R.id.btLogout)
@@ -59,11 +65,14 @@ class ListagemFragment : Fragment(), RecyclerViewItemListener {
 
         //-------adMob
 
-        MobileAds.initialize(context){}
 
-        val adView = view.findViewById<AdView>(R.id.adView)
-        val adRequest = AdRequest.Builder().build()
-        adView.loadAd(adRequest)
+            MobileAds.initialize(context){}
+
+            val adView = view.findViewById<AdView>(R.id.adView)
+            val adRequest = AdRequest.Builder().build()
+            adView.loadAd(adRequest)
+
+
 
         //--------Dados do usuário
 
@@ -78,6 +87,19 @@ class ListagemFragment : Fragment(), RecyclerViewItemListener {
 
         atualizar()
 
+        val btComprar = view.findViewById<Button>(R.id.btComprar)
+
+        btComprar.setOnClickListener {
+
+            thread {
+                val produto = loja.produtos[0]
+                loja.efetuarCompra(produto)
+            }
+            val adContainer = view.findViewById<LinearLayout>(R.id.adContainer)
+            adContainer.visibility = View.INVISIBLE
+
+        }
+
 
 
 
@@ -88,25 +110,26 @@ class ListagemFragment : Fragment(), RecyclerViewItemListener {
 
     private fun atualizar(){
 
+        thread {
+            if (appUser != null) {
+                anotacaoDao.anotacoesUsuario(appUser!!.email!!).addOnSuccessListener {
+                    val anotacoesUsuario = ArrayList<Anotacao>()
 
-        if (appUser != null){
-            anotacaoDao.anotacoesUsuario(appUser!!.email!!).addOnSuccessListener {
-                val anotacoesUsuario = ArrayList<Anotacao>()
+                    for (documento in it) {
+                        var anotacao = documento.toObject(Anotacao::class.java)//
+                        anotacoesUsuario.add(anotacao)
+                    }
 
-                for (documento in it) {
-                    var anotacao = documento.toObject(Anotacao::class.java)//
-                   anotacoesUsuario.add(anotacao)
+                    val rvAnotacoesUsuario = view?.findViewById<RecyclerView>(R.id.rvLista)
+                    rvAnotacoesUsuario?.layoutManager = LinearLayoutManager(context)
+                    adapter = AnotacoesAdapter(this)
+                    adapter.listaAnotacao = anotacoesUsuario
+                    rvAnotacoesUsuario?.adapter = adapter
+
+
+                }.addOnFailureListener {
+                    Toast.makeText(activity, "Falha", Toast.LENGTH_LONG).show()
                 }
-
-                val rvAnotacoesUsuario = view?.findViewById<RecyclerView>(R.id.rvLista)
-                rvAnotacoesUsuario?.layoutManager = LinearLayoutManager(context)
-                adapter = AnotacoesAdapter(this)
-                adapter.listaAnotacao = anotacoesUsuario
-                rvAnotacoesUsuario?.adapter = adapter
-
-
-            }.addOnFailureListener {
-                Toast.makeText(activity, "Falha", Toast.LENGTH_LONG).show()
             }
         }
 
@@ -133,5 +156,9 @@ class ListagemFragment : Fragment(), RecyclerViewItemListener {
         findNavController().navigate(R.id.action_listagemFragment_to_editFragment,bundle)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        loja.fecharLoja()
+    }
 
 }

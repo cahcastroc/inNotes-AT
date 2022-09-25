@@ -32,7 +32,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="10dp"
-                        android:text="Usuário: "
+                        android:text="@string/usu_rio"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -40,7 +40,7 @@
                         android:id="@+id/tvUserEmail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="tvUsuario" />
+                        android:text="@string/tvusuario" />
                 </TableRow>
 
                 <TableRow
@@ -53,7 +53,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="10dp"
-                        android:text="Último login:"
+                        android:text="@string/ltimo_login"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -61,7 +61,7 @@
                         android:id="@+id/tvUltimoLogin"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="TextView" />
+                        android:text="@string/tvultimologin" />
                 </TableRow>
 
             </TableLayout>
@@ -71,14 +71,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="140dp"
-                android:text="Sair" />
+                android:text="@string/sair" />
 
             <TextView
                 android:id="@+id/textView15"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Anotações de estudo:"
+                android:text="@string/anota_es_de_estudo"
                 android:textAlignment="center"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -91,19 +91,30 @@
 
             </androidx.recyclerview.widget.RecyclerView>
 
-            <com.google.android.gms.ads.AdView
-                android:id="@+id/adView"
-                android:layout_width="406dp"
-                android:layout_height="92dp"
-                android:layout_marginTop="50dp"
-                ads:adSize="BANNER"
-                ads:adUnitId="ca-app-pub-3940256099942544/6300978111" />
-
-            <Button
-                android:id="@+id/button2"
+            <LinearLayout
+                android:id="@+id/adContainer"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Button" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <com.google.android.gms.ads.AdView
+                    android:id="@+id/adView"
+                    android:layout_width="406dp"
+                    android:layout_height="92dp"
+                    android:layout_marginTop="50dp"
+                    ads:adSize="BANNER"
+                    ads:adUnitId="ca-app-pub-3940256099942544/6300978111" />
+
+                <Button
+                    android:id="@+id/btComprar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:backgroundTint="#283593"
+                    android:text="@string/vers_o_premium"
+                    ads:icon="@android:drawable/star_big_off" />
+
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
