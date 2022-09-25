@@ -10,8 +10,8 @@ import android.widget.*
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.edu.infnet.innotes.R
-import br.edu.infnet.innotes.domain.apiBook.QueryItem
-import br.edu.infnet.innotes.domain.apiBook.QueryResult
+import br.edu.infnet.innotes.domain.apiLivros.BuscaItem
+import br.edu.infnet.innotes.domain.apiLivros.QueryResult
 import br.edu.infnet.innotes.service.apiBook.bookServiceListener
 import br.edu.infnet.innotes.service.apiBook.LivroService
 import br.edu.infnet.innotes.ui.recyclerView.LivrosAdapter
@@ -70,7 +70,7 @@ class LivrosFragment : Fragment(), RecyclerViewItemListener, bookServiceListener
         try {
             if (queryResult != null) {
                 val itensPesquisa = queryResult.items
-                val listaLivros = ArrayList<QueryItem>()
+                val listaLivros = ArrayList<BuscaItem>()
                 Log.i("DR3", "Resultado com ${itensPesquisa.size} itens")
 
                 for (queryItem in itensPesquisa) {

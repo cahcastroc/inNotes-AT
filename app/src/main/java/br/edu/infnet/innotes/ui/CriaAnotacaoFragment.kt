@@ -1,7 +1,6 @@
 package br.edu.infnet.innotes.ui
 
 import android.Manifest
-import android.app.Activity.MODE_PRIVATE
 import android.app.Activity.RESULT_OK
 import android.content.Context.LOCATION_SERVICE
 import android.content.Intent
@@ -21,7 +20,6 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker
-import androidx.core.graphics.drawable.toDrawable
 import androidx.navigation.fragment.findNavController
 import androidx.security.crypto.EncryptedFile
 import androidx.security.crypto.MasterKey
@@ -43,13 +41,12 @@ class CriaAnotacaoFragment : Fragment(), LocationListener {
     private lateinit var etTitulo: EditText
     private lateinit var etTexto: EditText
     private lateinit var imgCamera: ImageView
-    private lateinit var date: String
+    private lateinit var data: String
     private var email: String? = null
     private lateinit var latitude: String
     private lateinit var longitude: String
 
     val FINE_REQUEST = 5678
-    val COARSE_REQUEST = 8765
     val CAMERA_PERMISSION_CODE = 100
     val CAMERA_REQUEST = 1888
     private var localizacao: Location? = null
@@ -73,7 +70,7 @@ class CriaAnotacaoFragment : Fragment(), LocationListener {
         //----------------------
 
         localizacao = localizacaoPorGps()
-        date = data()
+        data = data()
         email = FirebaseAuth.getInstance().currentUser?.email
 
 
@@ -105,7 +102,7 @@ class CriaAnotacaoFragment : Fragment(), LocationListener {
             anotacao = Anotacao(
                 null,
                 email,
-                date,
+                data,
                 latitude,
                 longitude,
                 etTitulo.text.toString(),
@@ -125,7 +122,7 @@ class CriaAnotacaoFragment : Fragment(), LocationListener {
 
 
             }?.addOnFailureListener {
-                Toast.makeText(activity, "Erro inesperado ${it.message}", Toast.LENGTH_LONG).show()
+                Toast.makeText(activity, "Erro inesperado: ${it.message}", Toast.LENGTH_LONG).show()
             }
         }
 
@@ -178,35 +175,6 @@ class CriaAnotacaoFragment : Fragment(), LocationListener {
         return localizacao
     }
 
-//    private fun localizacaoPorRede(): Location? {
-//
-//        var localizacao: Location? = null
-//
-//        var locationManager = requireContext().getSystemService(LOCATION_SERVICE) as LocationManager
-//        val servicoAtivado = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
-//        if (servicoAtivado) {
-//
-//            if (ContextCompat.checkSelfPermission(
-//                    requireContext(),
-//                    Manifest.permission.ACCESS_COARSE_LOCATION
-//                ) == PermissionChecker.PERMISSION_GRANTED
-//            ) {
-//                locationManager.requestLocationUpdates(
-//                    LocationManager.NETWORK_PROVIDER,
-//                    1000L,
-//                    0f,
-//                    this
-//                )
-//                localizacao = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
-//            } else {
-//                requestPermissions(
-//                    arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
-//                    COARSE_REQUEST
-//                )
-//            }
-//        }
-//        return localizacao
-//    }
 
     private fun exibeDadosAnotacao() {
 
@@ -221,7 +189,7 @@ class CriaAnotacaoFragment : Fragment(), LocationListener {
         tvLatitude.text = latitude
         tvLongitude.text = longitude
         tvUsuario.text = email
-        tvData.text = date
+        tvData.text = data
         tvCriaTitulo.text = etTitulo.text.toString()
         tvCriaTexto.text = etTexto.text.toString()
         val bitmap = (imgCamera.drawable as BitmapDrawable).bitmap
@@ -235,23 +203,20 @@ class CriaAnotacaoFragment : Fragment(), LocationListener {
             .build()
 
 
-        val file = File(requireActivity().filesDir, "${etTitulo.text}-${date}.txt")
+        val arquivo = File(requireActivity().filesDir, "${etTitulo.text.toString().replace(" ", "-")}-${data}.txt")
 
         Log.i(
             "DR3",
-            "local: ${latitude} - ${longitude}, data ${date}, titulo: ${etTitulo.text}, texto: ${etTexto.text}"
+            "local: ${latitude} - ${longitude}, data ${data}, titulo: ${etTitulo.text}, texto: ${etTexto.text}"
         )
 
-        if (file.exists()) {
-            file.delete()
-        }
-        val encryptedFile = EncryptedFile.Builder(
+        val arquivoCriptografado = EncryptedFile.Builder(
             requireContext(),
-            file,
+            arquivo,
             masterKey,
             EncryptedFile.FileEncryptionScheme.AES256_GCM_HKDF_4KB
         ).build()
-        val fos = encryptedFile.openFileOutput()
+        val fos = arquivoCriptografado.openFileOutput()
 
         fos.write("Localização: \nLatitude: ${latitude}, longitude: ${longitude}\n${etTexto.text}".toByteArray())
         fos.close()
@@ -267,22 +232,31 @@ class CriaAnotacaoFragment : Fragment(), LocationListener {
             .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
             .build()
 
-        val file = File(requireActivity().filesDir, "${etTitulo.text}-${date}.fig")
+        val arquivo = File(requireActivity().filesDir, "${etTitulo.text.toString().replace(" ","-")}-${data}.fig")
 
-        if (file.exists()) {
-            file.delete()
-        }
-        val encryptedFile = EncryptedFile.Builder(
+
+        val arquivoCriptografado = EncryptedFile.Builder(
             requireContext(),
-            file,
+            arquivo,
             masterKey,
             EncryptedFile.FileEncryptionScheme.AES256_GCM_HKDF_4KB
         ).build()
-        val fos = encryptedFile.openFileOutput()
+        val fos = arquivoCriptografado.openFileOutput()
         fos.write(bitmap.toString().toByteArray())
         fos.close()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
+
+            val imgBitmap = data?.extras!!["data"] as Bitmap
+            imgCamera = requireView().findViewById<ImageView>(R.id.ivCamera)
+            imgCamera.setImageBitmap(imgBitmap)
+            val bitmap = (imgCamera.drawable as BitmapDrawable).bitmap
+            salvaArquivoFig(bitmap)
+        }
+    }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -299,45 +273,24 @@ class CriaAnotacaoFragment : Fragment(), LocationListener {
                     Toast.makeText(activity, "Não permitido acesso ao GPS", Toast.LENGTH_LONG)
                         .show()
                 }
-//                if (requestCode == COARSE_REQUEST) {
-//                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                        localizacaoPorRede()
-//                    } else {
-//                        Toast.makeText(activity, "Não permitido acesso ao GPS", Toast.LENGTH_LONG)
-//                            .show()
-//                    }
-//                }
-                    if (requestCode == CAMERA_PERMISSION_CODE) {
-                        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                            intentCamera()
+                if (requestCode == CAMERA_PERMISSION_CODE) {
+                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        intentCamera()
 
-                        } else {
-                            Toast.makeText(
-                                activity,
-                                "Não permitido acesso à câmera",
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
+                    } else {
+                        Toast.makeText(
+                            activity,
+                            "Não permitido acesso à câmera",
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
+                }
 
             }
 
         }
     }
 
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
-
-            val imgBitmap = data?.extras!!["data"] as Bitmap
-            imgCamera = requireView().findViewById<ImageView>(R.id.ivCamera)
-            imgCamera.setImageBitmap(imgBitmap)
-            val bitmap = (imgCamera.drawable as BitmapDrawable).bitmap
-            salvaArquivoFig(bitmap)
-
-        }
-    }
 
     override fun onLocationChanged(p0: Location) {
     }

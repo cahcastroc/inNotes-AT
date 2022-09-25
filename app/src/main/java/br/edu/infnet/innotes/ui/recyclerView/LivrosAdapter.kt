@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import br.edu.infnet.innotes.R
-import br.edu.infnet.innotes.domain.apiBook.QueryItem
+import br.edu.infnet.innotes.domain.apiLivros.BuscaItem
 import com.bumptech.glide.Glide
 
 
@@ -15,14 +15,14 @@ class LivrosAdapter(listener: RecyclerViewItemListener): RecyclerView.Adapter<Li
 
 
     private var listener = listener
-    var listaLivros = listOf<QueryItem>()
+    var listaLivros = listOf<BuscaItem>()
         set(value) {
             field = value
             this.notifyDataSetChanged()
         }
 
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        fun bindItem(livro :QueryItem,itemListener: RecyclerViewItemListener,position: Int){
+        fun bindItem(livro :BuscaItem, itemListener: RecyclerViewItemListener, position: Int){
 
             val imageView = itemView.findViewById<ImageView>(R.id.imageView)
 

@@ -16,7 +16,7 @@
         android:layout_marginTop="200dp"
         android:background="@drawable/btnapp"
         android:padding="10dp"
-        android:text="Consulta Bibliográfica"
+        android:text="@string/consulta_bibliogr_fica"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -28,7 +28,7 @@
         android:layout_marginTop="50dp"
         android:background="@drawable/btnapp"
         android:padding="10dp"
-        android:text="Dicionário"
+        android:text="@string/dicion_rio"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btApiLivro" />

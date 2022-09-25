@@ -15,19 +15,21 @@
         android:layout_height="wrap_content"
         android:backgroundTint="#81DAE1E0"
         android:ems="10"
-        android:hint="Insira a palavra que você deseja pesquisar..."
+        android:hint="@string/insira_a_palavra_que_voc_deseja_pesquisar"
         android:inputType="textPersonName"
         android:padding="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="TextContrastCheck"
+        android:autofillHints="" />
 
     <Button
         android:id="@+id/btBuscar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:text="Pesquisar"
+        android:text="@string/pesquisar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etPalavra" />

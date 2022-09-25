@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center_horizontal"
     android:orientation="vertical"
     android:padding="20dp"
     tools:context=".ui.EditFragment">
@@ -14,7 +15,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-light"
         android:padding="5dp"
-        android:text="Novo Título"
+        android:text="@string/novo_t_tulo"
         android:textAlignment="viewStart"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -24,11 +25,13 @@
         android:id="@+id/etNovoTitulo"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:autofillHints=""
         android:background="@drawable/retangulo"
         android:backgroundTint="#81DAE1E0"
-        android:hint="Insira o novo título da anotação"
+        android:hint="@string/insira_o_novo_t_tulo_da_anota_o"
         android:inputType="textPersonName"
-        android:padding="10dp" />
+        android:padding="10dp"
+        tools:ignore="TextContrastCheck" />
 
     <TextView
         android:id="@+id/tvNovoTexto"
@@ -36,7 +39,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-light"
         android:padding="5dp"
-        android:text="Novo Texto: "
+        android:text="@string/novo_texto"
         android:textAlignment="viewStart"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -46,19 +49,24 @@
         android:id="@+id/etNovoTexto"
         android:layout_width="match_parent"
         android:layout_height="94dp"
+        android:autofillHints=""
         android:backgroundTint="#81DAE1E0"
         android:ems="10"
         android:gravity="start|top"
-        android:hint="Insira a nova anotação"
+        android:hint="@string/insira_a_nova_anota_o"
         android:inputType="textMultiLine"
-        android:padding="10dp" />
+        android:padding="10dp"
+        tools:ignore="TextContrastCheck" />
 
     <ImageButton
         android:id="@+id/ibSalvar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="78dp"
+        android:layout_height="80dp"
         android:backgroundTint="#FFFFFF"
-        android:src="@android:drawable/ic_menu_save" />
+        android:contentDescription="@string/icone_salvar"
+        android:scaleType="fitStart"
+        android:src="@android:drawable/ic_menu_save"
+        tools:ignore="ImageContrastCheck" />
 
 
 </LinearLayout>

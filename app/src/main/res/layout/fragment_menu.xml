@@ -15,7 +15,7 @@
         android:layout_marginTop="260dp"
         android:background="@drawable/btnapp"
         android:padding="10dp"
-        android:text="Inserir Anotação"
+        android:text="@string/inserir_anota_o"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.529"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,7 +28,7 @@
         android:layout_marginTop="30dp"
         android:background="@drawable/btnapp"
         android:padding="10dp"
-        android:text="Visualizar anotações"
+        android:text="@string/visualizar_anota_es"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btInserir" />
@@ -40,7 +40,7 @@
         android:layout_marginTop="30dp"
         android:background="@drawable/btnapp"
         android:padding="10dp"
-        android:text="Ferramentas de estudo"
+        android:text="@string/ferramentas_de_estudo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btVisualizar" />

@@ -1,6 +1,6 @@
 package br.edu.infnet.innotes.service.apiBook
 
-import br.edu.infnet.innotes.domain.apiBook.QueryResult
+import br.edu.infnet.innotes.domain.apiLivros.QueryResult
 
 interface bookServiceListener {
 

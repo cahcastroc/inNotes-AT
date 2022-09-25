@@ -1,7 +1,7 @@
 package br.edu.infnet.innotes.service.apiBook
 
 import android.util.Log
-import br.edu.infnet.innotes.domain.apiBook.QueryResult
+import br.edu.infnet.innotes.domain.apiLivros.QueryResult
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

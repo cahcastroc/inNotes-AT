@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-light"
                 android:padding="5dp"
-                android:text="Título"
+                android:text="@string/t_tulo"
                 android:textAlignment="viewStart"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -33,11 +33,13 @@
                 android:id="@+id/etTitulo"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:autofillHints=""
                 android:background="@drawable/retangulo"
                 android:backgroundTint="#81DAE1E0"
-                android:hint="Insira o título da anotação"
+                android:hint="@string/insira_o_t_tulo_da_anota_o"
                 android:inputType="textPersonName"
-                android:padding="10dp" />
+                android:padding="10dp"
+                tools:ignore="TextContrastCheck" />
 
             <TextView
                 android:id="@+id/tvTexto"
@@ -45,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-light"
                 android:padding="5dp"
-                android:text="Texto: "
+                android:text="@string/texto"
                 android:textAlignment="viewStart"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -55,19 +57,14 @@
                 android:id="@+id/etTexto"
                 android:layout_width="match_parent"
                 android:layout_height="94dp"
+                android:autofillHints=""
                 android:backgroundTint="#81DAE1E0"
                 android:ems="10"
                 android:gravity="start|top"
-                android:hint="Insira a sua anotação"
+                android:hint="@string/insira_a_sua_anota_o"
                 android:inputType="textMultiLine"
-                android:padding="10dp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="0dp"
-                android:layout_marginBottom="0dp"
-                android:orientation="horizontal" />
+                android:padding="10dp"
+                tools:ignore="TextContrastCheck" />
 
             <TextView
                 android:id="@+id/tvImg"
@@ -75,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-light"
                 android:padding="5dp"
-                android:text="Imagem"
+                android:text="@string/imagem"
                 android:textAlignment="viewStart"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -86,10 +83,12 @@
                 android:layout_width="140dp"
                 android:layout_height="150dp"
                 android:layout_gravity="center"
+                android:contentDescription="@string/icone_imagem"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@android:drawable/ic_menu_gallery" />
+                app:srcCompat="@android:drawable/ic_menu_gallery"
+                tools:ignore="ImageContrastCheck" />
 
             <ImageButton
                 android:id="@+id/btCamera"
@@ -97,8 +96,11 @@
                 android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="0dp"
-                android:background="@color/teal_700"
-                android:src="@android:drawable/ic_menu_camera" />
+                android:background="@color/white"
+                android:contentDescription="@string/icone_camera"
+                android:scaleType="fitStart"
+                android:src="@android:drawable/ic_menu_camera"
+                app:tint="#0F1010" />
 
             <Button
                 android:id="@+id/btSalvarAnotacao"
@@ -107,7 +109,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/btnapp"
-                android:text="Salvar anotação"
+                android:text="@string/salvar_anota_o"
                 app:icon="@android:drawable/ic_menu_save"
                 app:iconGravity="textStart" />
 
@@ -121,7 +123,7 @@
                     android:id="@+id/tvListArquivo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Anotação salva com sucesso. Confira abaixo!"
+                    android:text="@string/anota_o_salva_com_sucesso_confira_abaixo"
                     android:textAlignment="center"
                     android:textStyle="bold" />
 
@@ -139,7 +141,7 @@
                             android:id="@+id/tvTextoLocalizacao"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Localização:"
+                            android:text="@string/localiza_o"
                             android:textStyle="bold" />
                     </TableRow>
 
@@ -154,7 +156,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
-                            android:text="Latitude:"
+                            android:text="@string/latitude"
                             android:textStyle="bold" />
 
                         <TextView
@@ -162,14 +164,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
-                            android:text="TextView" />
+                            android:text="@string/textview" />
 
                         <TextView
                             android:id="@+id/textView6"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
-                            android:text="Longitude:"
+                            android:text="@string/longitude"
                             android:textStyle="bold" />
 
                         <TextView
@@ -177,7 +179,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
-                            android:text="TextView" />
+                            android:text="@string/textview" />
 
                     </TableRow>
 
@@ -187,7 +189,7 @@
                     android:id="@+id/textView19"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Usuário:"
+                    android:text="@string/usu_rio"
                     android:textStyle="bold" />
 
                 <TextView
@@ -195,13 +197,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:text="TextView" />
+                    android:text="@string/textview" />
 
                 <TextView
                     android:id="@+id/textView8"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Data:"
+                    android:text="@string/data"
                     android:textStyle="bold" />
 
                 <TextView
@@ -209,13 +211,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:text="TextView" />
+                    android:text="@string/textview" />
 
                 <TextView
                     android:id="@+id/textView10"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Título:"
+                    android:text="@string/t_tulo"
                     android:textStyle="bold" />
 
                 <TextView
@@ -223,44 +225,45 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:text="TextView" />
+                    android:text="@string/textview" />
 
                 <TextView
                     android:id="@+id/textView16"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Texto:"
+                    android:text="@string/texto"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tvCriaTexto"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="TextView" />
+                    android:text="@string/textview" />
 
                 <ImageView
                     android:id="@+id/ivCria"
                     android:layout_width="140dp"
                     android:layout_height="150dp"
                     android:layout_gravity="center"
+                    android:contentDescription="@string/icone_de_imagem"
                     android:src="@android:drawable/ic_menu_gallery" />
 
                 <TextView
                     android:id="@+id/tvListaArquivo"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
                     android:layout_gravity="center|center_horizontal|center_vertical"
                     android:layout_marginTop="10dp"
                     android:layout_weight="1"
                     android:clickable="true"
-                    android:drawableEnd="@android:drawable/ic_menu_set_as"
                     android:gravity="center_horizontal|center_vertical|end"
                     android:linksClickable="true"
                     android:text="@string/listaArquivos"
                     android:textAlignment="center"
                     android:textColor="#172480"
                     android:textSize="14sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:drawableEndCompat="@android:drawable/ic_menu_set_as" />
 
             </LinearLayout>
 

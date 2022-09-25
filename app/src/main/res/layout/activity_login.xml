@@ -12,33 +12,39 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:autofillHints=""
         android:background="@drawable/retangulo"
         android:backgroundTint="#81DAE1E0"
         android:drawableStart="@drawable/iconemail"
         android:ems="10"
-        android:hint="E-mail"
+        android:hint="@string/e_mail"
         android:inputType="textEmailAddress"
         android:paddingStart="10dp"
+        android:paddingEnd="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.6"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivCamera" />
+        app:layout_constraintTop_toBottomOf="@+id/ivCamera"
+        tools:ignore="TextContrastCheck" />
 
     <EditText
         android:id="@+id/etSenha"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:autofillHints=""
         android:background="@drawable/retangulo"
         android:backgroundTint="#81DAE1E0"
         android:drawableStart="@drawable/iconsenha"
         android:ems="10"
-        android:hint="Senha"
+        android:hint="@string/senha"
         android:inputType="textPassword"
         android:paddingStart="10dp"
+        android:paddingEnd="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/etEmail"
+        tools:ignore="TextContrastCheck" />
 
     <Button
         android:id="@+id/btLogin"
@@ -46,7 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:background="@drawable/btnapp"
-        android:text="Login"
+        android:text="@string/login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etSenha" />
@@ -57,7 +63,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:background="@drawable/btnapp"
-        android:text="Cadastrar"
+        android:text="@string/cadastrar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btLogin" />
@@ -68,7 +74,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:background="@drawable/btnapp"
-        android:text="Login pelo Facebook"
+        android:text="@string/login_pelo_facebook"
         app:backgroundTint="#283593"
         app:icon="@drawable/btfacebook"
         app:iconGravity="textStart"
@@ -82,10 +88,12 @@
         android:layout_width="200dp"
         android:layout_height="171dp"
         android:layout_marginTop="16dp"
+        android:contentDescription="@string/logo_da_aplica_o"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
 
-        app:srcCompat="@drawable/notas" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/notas"
+        tools:ignore="ImageContrastCheck" />
 </androidx.constraintlayout.widget.ConstraintLayout>

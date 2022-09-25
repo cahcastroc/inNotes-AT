@@ -1,4 +1,4 @@
-package br.edu.infnet.innotes.domain.apiBook
+package br.edu.infnet.innotes.domain.apiLivros
 
 data class ImageLink (
     var smallThumbnail: String?,
