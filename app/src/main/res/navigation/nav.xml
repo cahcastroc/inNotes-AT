@@ -43,6 +43,9 @@
         <action
             android:id="@+id/action_listaArquivosFragment_to_menuFragment"
             app:destination="@id/menuFragment" />
+        <action
+            android:id="@+id/action_listaArquivosFragment_to_arquivoDescriptografadoFragment"
+            app:destination="@id/arquivoDescriptografadoFragment" />
     </fragment>
     <fragment
         android:id="@+id/editFragment"
@@ -53,4 +56,9 @@
             android:id="@+id/action_editFragment_to_listagemFragment"
             app:destination="@id/listagemFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/arquivoDescriptografadoFragment"
+        android:name="br.edu.infnet.innotes.ui.ArquivoDescriptografadoFragment"
+        android:label="fragment_arquivo_descriptografado"
+        tools:layout="@layout/fragment_arquivo_descriptografado" />
 </navigation>

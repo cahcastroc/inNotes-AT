@@ -205,10 +205,6 @@ class CriaAnotacaoFragment : Fragment(), LocationListener {
 
         val arquivo = File(requireActivity().filesDir, "${etTitulo.text.toString().replace(" ", "-")}-${data}.txt")
 
-        Log.i(
-            "DR3",
-            "local: ${latitude} - ${longitude}, data ${data}, titulo: ${etTitulo.text}, texto: ${etTexto.text}"
-        )
 
         val arquivoCriptografado = EncryptedFile.Builder(
             requireContext(),
@@ -218,7 +214,7 @@ class CriaAnotacaoFragment : Fragment(), LocationListener {
         ).build()
         val fos = arquivoCriptografado.openFileOutput()
 
-        fos.write("Localização: \nLatitude: ${latitude}, longitude: ${longitude}\n${etTexto.text}".toByteArray())
+        fos.write("Localização: \nLatitude: ${latitude}, longitude: ${longitude}\n Título:${etTitulo.text} \nTexto: ${etTexto.text}".toByteArray())
         fos.close()
     }
 

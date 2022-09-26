@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
 import androidx.security.crypto.EncryptedFile
 import androidx.security.crypto.MasterKey
 import br.edu.infnet.innotes.R
@@ -42,8 +44,6 @@ class ListaArquivosFragment : Fragment(),AdapterView.OnItemClickListener {
         listArquivos.onItemClickListener = this
 
 
-
-
         return view
     }
 
@@ -66,11 +66,15 @@ class ListaArquivosFragment : Fragment(),AdapterView.OnItemClickListener {
         val fis = arquivoCriptografado.openFileInput()
         val bytes = fis.readBytes()
 
+        val bundle = bundleOf("conteudo" to String(bytes))
+        findNavController().navigate(R.id.action_listaArquivosFragment_to_arquivoDescriptografadoFragment,bundle)
         Log.i("AT","Conteúdo do arquivo descriptografado: ${String(bytes)}")
 
 
 
     }
+
+
 
 
 }

@@ -3,6 +3,7 @@ package br.edu.infnet.innotes.ui
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.os.SystemClock
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -24,6 +25,8 @@ import br.edu.infnet.innotes.service.AnotacaoDao
 import br.edu.infnet.innotes.service.billing.Loja
 import br.edu.infnet.innotes.ui.recyclerView.AnotacoesAdapter
 import br.edu.infnet.innotes.ui.recyclerView.RecyclerViewItemListener
+import com.android.billingclient.api.BillingClientStateListener
+import com.android.billingclient.api.BillingResult
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
@@ -31,12 +34,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import java.util.*
 import kotlin.concurrent.thread
-
-
-//listagem das anotações, apresentando data e título em cada linha.
-//deve mostrar os dados do usuário logado e permitir o logout - Botão
-//O Banner será exibido na tela de listagem, junto a um botão para desbloqueio da versão Premium.
-//Listagem -
 
 class ListagemFragment : Fragment(), RecyclerViewItemListener {
 
@@ -94,34 +91,19 @@ class ListagemFragment : Fragment(), RecyclerViewItemListener {
 
         btComprar.setOnClickListener {
 
-              Thread (Runnable {
+
                 val produto = loja.produtos[0]
                 loja.efetuarCompra(produto)
-
-
-              }).start()
-
-
-            val adContainer = view.findViewById<LinearLayout>(R.id.adContainer)
+                val adContainer = view.findViewById<LinearLayout>(R.id.adContainer)
                 adContainer.visibility = View.INVISIBLE
-
-
-//            Thread.sleep(5000)
-//
-//            Handler().post(Runnable { })
-            Log.i("AT", "${loja.aux}")
-
-
         }
-
         return view
-
     }
 
 
     private fun atualizar(){
 
-        thread {
+        Thread {
             if (appUser != null) {
                 anotacaoDao.anotacoesUsuario(appUser!!.email!!).addOnSuccessListener {
                     val anotacoesUsuario = ArrayList<Anotacao>()
@@ -142,7 +124,7 @@ class ListagemFragment : Fragment(), RecyclerViewItemListener {
                     Toast.makeText(activity, "Falha", Toast.LENGTH_LONG).show()
                 }
             }
-        }
+        }.start()
 
 
     }
@@ -167,9 +149,12 @@ class ListagemFragment : Fragment(), RecyclerViewItemListener {
         findNavController().navigate(R.id.action_listagemFragment_to_editFragment,bundle)
     }
 
+
     override fun onDestroy() {
         super.onDestroy()
         loja.fecharLoja()
     }
+
+
 
 }

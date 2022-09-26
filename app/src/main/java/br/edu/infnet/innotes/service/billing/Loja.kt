@@ -1,11 +1,8 @@
 package br.edu.infnet.innotes.service.billing
 
 import android.util.Log
-import android.view.View
-import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import br.edu.infnet.innotes.domain.Produto
-import br.edu.infnet.innotes.ui.ListagemFragment
 import com.android.billingclient.api.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -13,22 +10,27 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class Loja//---------------------------------------------------------------------------
-    (private var context: AppCompatActivity) : BillingClientStateListener, SkuDetailsResponseListener, PurchasesUpdatedListener {
+    (private var context: AppCompatActivity) : BillingClientStateListener,
+    SkuDetailsResponseListener, PurchasesUpdatedListener {
+
 
     val produtos: MutableList<Produto> = ArrayList<Produto>()
     var clienteInApp: BillingClient
     val skuList = ArrayList<String>()
 
-    var aux: Int = 0
 
 
+    var result: BillingResult? = null
 
-
-
-    private lateinit var result: BillingResult
 
     init {
-        produtos.add(Produto("android.test.purchased", "Versão premium do aplicativo inNotes App", null))
+        produtos.add(
+            Produto(
+                "android.test.purchased",
+                "Versão premium do aplicativo inNotes App",
+                null
+            )
+        )
         clienteInApp = BillingClient
             .newBuilder(context)
             .enablePendingPurchases()
@@ -58,6 +60,7 @@ class Loja//--------------------------------------------------------------------
 
     override fun onBillingServiceDisconnected() {
     }
+
     override fun onSkuDetailsResponse(
         billingResult: BillingResult?,
         skuDetailsList: MutableList<SkuDetails>?
@@ -115,10 +118,7 @@ class Loja//--------------------------------------------------------------------
                 GlobalScope.launch(Dispatchers.IO) {
 
                     handlePurchase(purchase)
-
                 }
-
-
 
             }
         } else if (billingResult?.responseCode == BillingClient.BillingResponseCode.USER_CANCELED) {
@@ -126,27 +126,23 @@ class Loja//--------------------------------------------------------------------
         }
     }
 
+    suspend fun handlePurchase(purchase: Purchase) {
 
-
-    suspend fun handlePurchase(purchase : Purchase) {
-
-        if(purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
+        if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
 
             Log.i("AT", "Compra Confirmada ${purchase.purchaseState}")
 
+            //------------
 
-
-            if(!purchase.isAcknowledged) {
+            if (!purchase.isAcknowledged) {
 
                 val params = AcknowledgePurchaseParams
                     .newBuilder()
                     .setPurchaseToken(purchase.purchaseToken)
                     .build()
-                val result = withContext(Dispatchers.IO) {
+                result = withContext(Dispatchers.IO) {
                     clienteInApp.acknowledgePurchase(params)
                 }
-
-
             }
         }
     }
@@ -156,8 +152,6 @@ class Loja//--------------------------------------------------------------------
         Log.i("AT", "Fechando a Loja")
         clienteInApp.endConnection()
 
-
-           }
-
+    }
 
 }
