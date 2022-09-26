@@ -2,7 +2,8 @@ package br.edu.infnet.innotes.ui
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +12,9 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.HandlerCompat.postDelayed
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -91,16 +94,25 @@ class ListagemFragment : Fragment(), RecyclerViewItemListener {
 
         btComprar.setOnClickListener {
 
-            thread {
+              Thread (Runnable {
                 val produto = loja.produtos[0]
                 loja.efetuarCompra(produto)
-            }
+
+
+              }).start()
+
+
             val adContainer = view.findViewById<LinearLayout>(R.id.adContainer)
-            adContainer.visibility = View.INVISIBLE
+                adContainer.visibility = View.INVISIBLE
+
+
+//            Thread.sleep(5000)
+//
+//            Handler().post(Runnable { })
+            Log.i("AT", "${loja.aux}")
+
+
         }
-
-
-
 
         return view
 

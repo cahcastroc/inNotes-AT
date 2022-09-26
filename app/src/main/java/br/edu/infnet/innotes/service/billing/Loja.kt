@@ -1,26 +1,34 @@
 package br.edu.infnet.innotes.service.billing
 
 import android.util.Log
+import android.view.View
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import br.edu.infnet.innotes.domain.Produto
+import br.edu.infnet.innotes.ui.ListagemFragment
 import com.android.billingclient.api.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class Loja : BillingClientStateListener, SkuDetailsResponseListener, PurchasesUpdatedListener {
+class Loja//---------------------------------------------------------------------------
+    (private var context: AppCompatActivity) : BillingClientStateListener, SkuDetailsResponseListener, PurchasesUpdatedListener {
 
-    private lateinit var context: AppCompatActivity
     val produtos: MutableList<Produto> = ArrayList<Produto>()
-    private lateinit var clienteInApp: BillingClient
+    var clienteInApp: BillingClient
+    val skuList = ArrayList<String>()
 
-    constructor(context: AppCompatActivity) {
+    var aux: Int = 0
 
-        this.context = context
-        produtos.add(Produto("android.test.purchased", null, null))
-        //---------------------------------------------------------------------------
 
+
+
+
+    private lateinit var result: BillingResult
+
+    init {
+        produtos.add(Produto("android.test.purchased", "Versão premium do aplicativo inNotes App", null))
         clienteInApp = BillingClient
             .newBuilder(context)
             .enablePendingPurchases()
@@ -35,7 +43,7 @@ class Loja : BillingClientStateListener, SkuDetailsResponseListener, PurchasesUp
 
         if (billingResult?.responseCode == BillingClient.BillingResponseCode.OK) {
 
-            val skuList = ArrayList<String>()
+
             for (produto in produtos) {
                 skuList.add(produto.sku)
             }
@@ -65,7 +73,7 @@ class Loja : BillingClientStateListener, SkuDetailsResponseListener, PurchasesUp
 
                     if (produto.sku.equals(product.sku)) {
 
-                        produto.descicao = product.description
+                        produto.descricao = product.description
                         produto.preco = product.price
                         produto.skuDetails = product
                     }
@@ -79,7 +87,7 @@ class Loja : BillingClientStateListener, SkuDetailsResponseListener, PurchasesUp
 
     fun efetuarCompra(produto: Produto) {
 
-        Log.i("DR4", "Efetuando uma compra")
+        Log.i("AT", "Efetuando uma compra")
         val params = BillingFlowParams
             .newBuilder()
             .setSkuDetails(produto.skuDetails)
@@ -98,24 +106,36 @@ class Loja : BillingClientStateListener, SkuDetailsResponseListener, PurchasesUp
             && purchaseList.size > 0
         ) {
 
-            Log.i("DR4", "Compra efetuada")
+            Log.i("AT", "Compra efetuada")
+
+
             for (purchase in purchaseList) {
+
 
                 GlobalScope.launch(Dispatchers.IO) {
 
                     handlePurchase(purchase)
+
                 }
+
+
+
             }
         } else if (billingResult?.responseCode == BillingClient.BillingResponseCode.USER_CANCELED) {
-            Log.i("DR4", "Usuário cancelou a compra")
+            Log.i("AT", "Usuário cancelou a compra")
         }
     }
+
+
 
     suspend fun handlePurchase(purchase : Purchase) {
 
         if(purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
 
-            Log.i("DR4", "Compra Confirmada")
+            Log.i("AT", "Compra Confirmada ${purchase.purchaseState}")
+
+
+
             if(!purchase.isAcknowledged) {
 
                 val params = AcknowledgePurchaseParams
@@ -125,13 +145,19 @@ class Loja : BillingClientStateListener, SkuDetailsResponseListener, PurchasesUp
                 val result = withContext(Dispatchers.IO) {
                     clienteInApp.acknowledgePurchase(params)
                 }
+
+
             }
         }
     }
 
     fun fecharLoja() {
 
-        Log.i("DR4", "Fechando a Loja")
+        Log.i("AT", "Fechando a Loja")
         clienteInApp.endConnection()
-    }
+
+
+           }
+
+
 }
