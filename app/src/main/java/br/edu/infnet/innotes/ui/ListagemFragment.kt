@@ -2,9 +2,6 @@ package br.edu.infnet.innotes.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.SystemClock
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +10,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.HandlerCompat.postDelayed
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -25,15 +21,13 @@ import br.edu.infnet.innotes.service.AnotacaoDao
 import br.edu.infnet.innotes.service.billing.Loja
 import br.edu.infnet.innotes.ui.recyclerView.AnotacoesAdapter
 import br.edu.infnet.innotes.ui.recyclerView.RecyclerViewItemListener
-import com.android.billingclient.api.BillingClientStateListener
-import com.android.billingclient.api.BillingResult
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import java.util.*
-import kotlin.concurrent.thread
+
 
 class ListagemFragment : Fragment(), RecyclerViewItemListener {
 
@@ -126,10 +120,6 @@ class ListagemFragment : Fragment(), RecyclerViewItemListener {
             }
         }.start()
 
-
-    }
-
-    override fun itemClicked(view: View, id: String) {
 
     }
 

@@ -111,7 +111,6 @@ class Loja//--------------------------------------------------------------------
 
             Log.i("AT", "Compra efetuada")
 
-
             for (purchase in purchaseList) {
 
 

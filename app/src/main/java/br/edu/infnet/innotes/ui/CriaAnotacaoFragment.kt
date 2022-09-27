@@ -12,7 +12,6 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -23,6 +22,7 @@ import androidx.core.content.PermissionChecker
 import androidx.navigation.fragment.findNavController
 import androidx.security.crypto.EncryptedFile
 import androidx.security.crypto.MasterKey
+import androidx.security.crypto.MasterKeys
 
 
 import br.edu.infnet.innotes.R
@@ -203,7 +203,10 @@ class CriaAnotacaoFragment : Fragment(), LocationListener {
             .build()
 
 
-        val arquivo = File(requireActivity().filesDir, "${etTitulo.text.toString().replace(" ", "-")}-${data}.txt")
+        val arquivo = File(
+            requireActivity().filesDir,
+            "${etTitulo.text.toString().replace(" ", "-")}-${data}.txt"
+        )
 
 
         val arquivoCriptografado = EncryptedFile.Builder(
@@ -224,11 +227,16 @@ class CriaAnotacaoFragment : Fragment(), LocationListener {
     }
 
     private fun salvaArquivoFig(bitmap: Bitmap?) {
+
+
         val masterKey = MasterKey.Builder(requireContext(), MasterKey.DEFAULT_MASTER_KEY_ALIAS)
             .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
             .build()
 
-        val arquivo = File(requireActivity().filesDir, "${etTitulo.text.toString().replace(" ","-")}-${data}.fig")
+        val arquivo = File(
+            requireActivity().filesDir,
+            "${etTitulo.text.toString().replace(" ", "-")}-${data}.fig"
+        )
 
 
         val arquivoCriptografado = EncryptedFile.Builder(

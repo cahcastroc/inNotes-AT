@@ -27,7 +27,7 @@ class LivrosFragment : Fragment(), RecyclerViewItemListener, bookServiceListener
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+
         val view = inflater.inflate(R.layout.fragment_livros, container, false)
 
 
@@ -71,7 +71,7 @@ class LivrosFragment : Fragment(), RecyclerViewItemListener, bookServiceListener
             if (queryResult != null) {
                 val itensPesquisa = queryResult.items
                 val listaLivros = ArrayList<BuscaItem>()
-                Log.i("DR3", "Resultado com ${itensPesquisa.size} itens")
+                Log.i("AT - Livros", "Resultado com ${itensPesquisa.size} itens")
 
                 for (queryItem in itensPesquisa) {
                     listaLivros.add(queryItem)
@@ -92,10 +92,6 @@ class LivrosFragment : Fragment(), RecyclerViewItemListener, bookServiceListener
 
     override fun onFailure(message: String?) {
         Toast.makeText(activity,"$message", Toast.LENGTH_LONG).show()
-    }
-
-    override fun itemClicked(view: View, id: String) {
-
     }
 
 

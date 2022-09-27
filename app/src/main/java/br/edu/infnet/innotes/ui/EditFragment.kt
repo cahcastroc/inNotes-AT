@@ -1,8 +1,7 @@
 package br.edu.infnet.innotes.ui
 
-import android.media.Image
+
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -43,8 +42,6 @@ class EditFragment : Fragment() {
                 }?.addOnFailureListener {
                     Toast.makeText(activity, "${it.message}", Toast.LENGTH_LONG).show()
                 }
-
-            Log.i("DR3", "${id}")
         }
         return view
     }

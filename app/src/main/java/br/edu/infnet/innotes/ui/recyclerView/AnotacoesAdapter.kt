@@ -50,11 +50,11 @@ class AnotacoesAdapter(listener: RecyclerViewItemListener) :
             val btEdit = itemView.findViewById<ImageButton>(R.id.btEdit)
 
             btDel.setOnClickListener {
-                itemListener.itemDeletar(it,anotacao.id!!)
+                itemListener.itemDeletar(it, anotacao.id!!)
             }
 
             btEdit.setOnClickListener {
-                itemListener.itemEditar(it,anotacao.id!!)
+                itemListener.itemEditar(it, anotacao.id!!)
             }
 
         }

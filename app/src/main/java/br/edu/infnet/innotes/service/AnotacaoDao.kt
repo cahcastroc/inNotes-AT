@@ -13,19 +13,6 @@ class AnotacaoDao {
     private val collection = "anotacoes"
     val db = Firebase.firestore
 
-    fun setUpSnapShotListener(
-        listener: (
-            QuerySnapshot?,
-            FirebaseFirestoreException?
-        ) -> Unit
-    ) = db
-        .collection(collection)
-        .addSnapshotListener(listener)
-
-    fun listar(): Task<QuerySnapshot> {
-        return db.collection(collection).get()
-    }
-
 
     fun inserir(anotacao: Anotacao): Task<Void>? {
         var task: Task<Void>? = null

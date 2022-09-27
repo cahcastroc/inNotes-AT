@@ -11,7 +11,8 @@ import br.edu.infnet.innotes.domain.apiLivros.BuscaItem
 import com.bumptech.glide.Glide
 
 
-class LivrosAdapter(listener: RecyclerViewItemListener): RecyclerView.Adapter<LivrosAdapter.ViewHolder>() {
+class LivrosAdapter(listener: RecyclerViewItemListener) :
+    RecyclerView.Adapter<LivrosAdapter.ViewHolder>() {
 
 
     private var listener = listener
@@ -21,12 +22,12 @@ class LivrosAdapter(listener: RecyclerViewItemListener): RecyclerView.Adapter<Li
             this.notifyDataSetChanged()
         }
 
-    class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        fun bindItem(livro :BuscaItem, itemListener: RecyclerViewItemListener, position: Int){
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        fun bindItem(livro: BuscaItem, itemListener: RecyclerViewItemListener, position: Int) {
 
             val imageView = itemView.findViewById<ImageView>(R.id.imageView)
 
-            if(livro.volumeInfo.imageLinks != null && livro.volumeInfo.imageLinks!!.smallThumbnail != null){
+            if (livro.volumeInfo.imageLinks != null && livro.volumeInfo.imageLinks!!.smallThumbnail != null) {
                 val url = livro.volumeInfo.imageLinks!!.smallThumbnail.toString()
                 Glide.with(itemView).asBitmap().load(url).into(imageView)
 
@@ -37,22 +38,18 @@ class LivrosAdapter(listener: RecyclerViewItemListener): RecyclerView.Adapter<Li
             val tvAutores = itemView.findViewById<TextView>(R.id.tvAutores)
             tvAutores.text = livro.volumeInfo.authors.toString()
 
-
-            itemView.setOnClickListener {
-                itemListener.itemClicked(it, livro.id!!)
-            }
         }
-
 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.linha_list_livro, parent,false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.linha_list_livro, parent, false)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindItem(listaLivros[position], listener,position)
+        holder.bindItem(listaLivros[position], listener, position)
     }
 
     override fun getItemCount(): Int {

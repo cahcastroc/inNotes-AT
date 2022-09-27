@@ -9,8 +9,6 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
-import androidx.security.crypto.EncryptedFile
-import androidx.security.crypto.MasterKey
 import br.edu.infnet.innotes.R
 import java.io.File
 
@@ -29,7 +27,7 @@ class ListaArquivosFragment : Fragment(),AdapterView.OnItemClickListener {
         val arquivos: Array<out File>? =
             requireContext().filesDir?.listFiles()
 
-        var nomesArquivos = ArrayList<String>()
+        val nomesArquivos = ArrayList<String>()
 
         if (arquivos != null) {
             for (i in arquivos.indices) {
@@ -48,27 +46,10 @@ class ListaArquivosFragment : Fragment(),AdapterView.OnItemClickListener {
     }
 
     override fun onItemClick(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-        var items :String = p0?.getItemAtPosition(p2) as String
+        val itemClicado :String = p0?.getItemAtPosition(p2) as String
 
-        val masterKey = MasterKey.Builder(requireContext())
-            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
-            .build()
-
-        val arquivo = File(requireActivity().filesDir,"$items")
-
-        val arquivoCriptografado = EncryptedFile.Builder(
-            requireContext(),
-            arquivo,
-            masterKey,
-            EncryptedFile.FileEncryptionScheme.AES256_GCM_HKDF_4KB
-        ).build()
-
-        val fis = arquivoCriptografado.openFileInput()
-        val bytes = fis.readBytes()
-
-        val bundle = bundleOf("conteudo" to String(bytes))
+        val bundle = bundleOf("nome" to itemClicado)
         findNavController().navigate(R.id.action_listaArquivosFragment_to_arquivoDescriptografadoFragment,bundle)
-        Log.i("AT","Conteúdo do arquivo descriptografado: ${String(bytes)}")
 
 
 

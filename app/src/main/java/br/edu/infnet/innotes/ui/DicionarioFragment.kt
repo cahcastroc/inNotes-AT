@@ -54,7 +54,7 @@ class DicionarioFragment : Fragment(), DicionarioServiceListener {
     }
 
     override fun onFailure(message: String?) {
-        Log.i("DR3", "ERRO ${message}")
+        Log.i("AT-Dicionário", "ERRO ${message}")
     }
 
 
