@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -72,6 +73,23 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="140dp"
                 android:text="@string/sair" />
+
+            <TextView
+                android:id="@+id/tvLista"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center|center_horizontal|center_vertical"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:gravity="center_horizontal|center_vertical|end"
+                android:linksClickable="true"
+                android:text="@string/listaArquivos"
+                android:textAlignment="center"
+                android:textColor="#172480"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:drawableEndCompat="@android:drawable/ic_menu_set_as" />
 
             <TextView
                 android:id="@+id/textView15"

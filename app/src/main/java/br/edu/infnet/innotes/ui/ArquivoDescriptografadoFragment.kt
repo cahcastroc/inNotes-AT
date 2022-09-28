@@ -8,10 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.security.crypto.EncryptedFile
 import androidx.security.crypto.MasterKey
 import br.edu.infnet.innotes.R
 import java.io.File
+import java.io.IOException
+import java.lang.reflect.InvocationTargetException
 
 
 class ArquivoDescriptografadoFragment : Fragment() {
@@ -30,28 +33,35 @@ class ArquivoDescriptografadoFragment : Fragment() {
 
         val nomeArquivo = arguments?.getString("nome")
 
-        val masterKey = MasterKey.Builder(requireContext())
-            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
-            .build()
+        try{
+            val masterKey = MasterKey.Builder(requireContext())
+                .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+                .build()
 
-        //-----Descriptografia do arquivo de texto
-        val arquivo = File(requireActivity().filesDir, "$nomeArquivo")
+            //-----Descriptografia do arquivo de texto
+            val arquivo = File(requireActivity().filesDir, "$nomeArquivo")
 
-        val arquivoCriptografado = EncryptedFile.Builder(
-            requireContext(),
-            arquivo,
-            masterKey,
-            EncryptedFile.FileEncryptionScheme.AES256_GCM_HKDF_4KB
-        ).build()
+            val arquivoCriptografado = EncryptedFile.Builder(
+                requireContext(),
+                arquivo,
+                masterKey,
+                EncryptedFile.FileEncryptionScheme.AES256_GCM_HKDF_4KB
+            ).build()
 
-        val fis = arquivoCriptografado.openFileInput()
-        val bytes = fis.readBytes()
+            val fis = arquivoCriptografado.openFileInput()
+            val bytes = fis.readBytes()
 
-        tvConteudo.text = bytes.decodeToString()
+            tvConteudo.text = bytes.decodeToString()
 
-        // "skia: --- Failed to create image decoder with message 'unimplemented'
-        val img = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-        ivTeste.setImageBitmap(img)
+            // "skia: --- Failed to create image decoder with message 'unimplemented'
+            val img = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+            ivTeste.setImageBitmap(img)
+        } catch( ex: InvocationTargetException){
+            Toast.makeText(activity,"${ex.message}",Toast.LENGTH_LONG).show()
+
+        } catch (ex: IOException){
+            Toast.makeText(activity,"${ex.message}",Toast.LENGTH_LONG).show()
+        }
 
 
         return view

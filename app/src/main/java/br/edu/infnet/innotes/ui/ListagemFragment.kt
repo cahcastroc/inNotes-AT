@@ -77,7 +77,14 @@ class ListagemFragment : Fragment(), RecyclerViewItemListener {
         tvUserEmail.text = appUser?.email.toString()
         tvUltimoLogin.text = appUser?.metadata?.let { Date(it.lastSignInTimestamp).toString() }
 
-      //--------------------------
+      //-------------------------- Lista de arquivos
+
+        val tvListaArquivo = view.findViewById<TextView>(R.id.tvLista)
+
+        tvListaArquivo.setOnClickListener {
+            findNavController().navigate(R.id.action_listagemFragment_to_listaArquivosFragment)
+        }
+        //------------------------------------
 
         atualizar()
 

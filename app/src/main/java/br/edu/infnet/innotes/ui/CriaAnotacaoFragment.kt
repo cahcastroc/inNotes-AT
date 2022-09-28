@@ -126,10 +126,10 @@ class CriaAnotacaoFragment : Fragment(), LocationListener {
             }
         }
 
-        val tvListaArquivo = view.findViewById<TextView>(R.id.tvListaArquivo)
+        val tvLista = view.findViewById<TextView>(R.id.tvLista)
 
-        tvListaArquivo.setOnClickListener {
-            findNavController().navigate(R.id.action_criaAnotacaoFragment_to_listaArquivosFragment)
+        tvLista.setOnClickListener {
+            findNavController().navigate(R.id.action_criaAnotacaoFragment_to_listagemFragment)
         }
 
         return view

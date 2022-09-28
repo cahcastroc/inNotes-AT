@@ -23,8 +23,8 @@
         android:label="fragment_cria_anotacao"
         tools:layout="@layout/fragment_cria_anotacao" >
         <action
-            android:id="@+id/action_criaAnotacaoFragment_to_listaArquivosFragment"
-            app:destination="@id/listaArquivosFragment" />
+            android:id="@+id/action_criaAnotacaoFragment_to_listagemFragment"
+            app:destination="@id/listagemFragment" />
     </fragment>
     <fragment
         android:id="@+id/listagemFragment"
@@ -34,15 +34,15 @@
         <action
             android:id="@+id/action_listagemFragment_to_editFragment"
             app:destination="@id/editFragment" />
+        <action
+            android:id="@+id/action_listagemFragment_to_listaArquivosFragment"
+            app:destination="@id/listaArquivosFragment" />
     </fragment>
     <fragment
         android:id="@+id/listaArquivosFragment"
         android:name="br.edu.infnet.innotes.ui.ListaArquivosFragment"
         android:label="fragment_lista_arquivos"
         tools:layout="@layout/fragment_lista_arquivos" >
-        <action
-            android:id="@+id/action_listaArquivosFragment_to_menuFragment"
-            app:destination="@id/menuFragment" />
         <action
             android:id="@+id/action_listaArquivosFragment_to_arquivoDescriptografadoFragment"
             app:destination="@id/arquivoDescriptografadoFragment" />

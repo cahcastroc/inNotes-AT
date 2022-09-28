@@ -248,24 +248,24 @@
                     android:contentDescription="@string/icone_de_imagem"
                     android:src="@android:drawable/ic_menu_gallery" />
 
-            </LinearLayout>
+                <TextView
+                    android:id="@+id/tvLista"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center|center_horizontal|center_vertical"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:gravity="center_horizontal|center_vertical|end"
+                    android:linksClickable="true"
+                    android:text="Visualizar lista de anotações"
+                    android:textAlignment="center"
+                    android:textColor="#172480"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:drawableEndCompat="@android:drawable/ic_menu_set_as" />
 
-            <TextView
-                android:id="@+id/tvListaArquivo"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_gravity="center|center_horizontal|center_vertical"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:clickable="true"
-                android:gravity="center_horizontal|center_vertical|end"
-                android:linksClickable="true"
-                android:text="@string/listaArquivos"
-                android:textAlignment="center"
-                android:textColor="#172480"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                app:drawableEndCompat="@android:drawable/ic_menu_set_as" />
+            </LinearLayout>
 
 
         </LinearLayout>
